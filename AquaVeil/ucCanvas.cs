@@ -49,7 +49,6 @@ namespace AquaVeil
             SolidBrush b;
             Pen pb = new Pen(bb);
             Pen pf = new Pen(bf);
-
             for (int i = 0; i < Map.Width; i++)
                 for (int j = 0; j < Map.Width; j++)
                 {
@@ -62,6 +61,20 @@ namespace AquaVeil
                         , Map.PixelWidth-2, Map.PixelHight-2);
                 }
             pb_main.Image = bmp;
+        }
+        /// <summary>
+        /// Перерисовка одного пикселя
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        void Redraw_pixel(int x,int y) {
+            SolidBrush b;
+            Graphics g = pictureBox1.CreateGraphics();
+            if (Map.MapCanvas[x][y] == 0)
+                b = new SolidBrush(Map.ColorPenForeground);
+            else
+                b = new SolidBrush(Map.ColorPenBackground);
+                g.FillRectangle(b, _distX + x * Map.PixelWidth, _distY + y * (Map.PixelWidth), Map.PixelWidth - 2, Map.PixelHight - 2);
         }
 
 
@@ -79,9 +92,30 @@ namespace AquaVeil
             Int32 yy = (y - _distY) / Map.PixelHight;
 
             Map.InvertPixel(xx, yy);
+            //Redraw_pixel(xx,yy); Предложение (так как при больших размерах лагает и не оптимально)
             Drawing();
 
             toolStripStatusLabel1.Text = "X=" + x.ToString() + " Y=" + y.ToString() + " xx = " + xx.ToString() + " yy = " + yy.ToString();
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+            Int32 x = e.X;
+            Int32 y = e.Y;
+
+            Int32 xx = (x - _distX) / Map.PixelWidth;
+            Int32 yy = (y - _distY) / Map.PixelHight;
+
+            Map.InvertPixel(xx, yy);
+            Redraw_pixel(xx, yy);
+        }
+
+        private void toolStripLabel1_Click(object sender, EventArgs e)
+        {
+            Map = new clMap();
+            Drawing();
         }
     }
     static class ext {

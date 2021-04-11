@@ -139,7 +139,7 @@ namespace AquaVeil
             if (x > Width)
                 return false;
 
-            if (x > Hight)
+            if (y > Hight)
                 return false;
 
             if (MapCanvas[x][y] == 0)
