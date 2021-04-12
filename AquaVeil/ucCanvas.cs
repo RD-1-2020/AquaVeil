@@ -27,9 +27,6 @@ namespace AquaVeil
         
         public void add_frame(String name_frame,int num_frame)
         {
-            // Короче хер его знает, можно попробовать перерисовывать в лист вью, я просто так ебал
-            // можно сделать эрейлист кадров(2), а кадры сделать классами (1)
-            // ну а у кадров сделать их положение и потом хуярить их в листвью(3) (можно и пб)
             Graphics g = pb_main.CreateGraphics();
             Image image = pb_main.Image;
             image.Crop(new Rectangle(0,0,Map.Width * Map.PixelWidth + 2* Map.Width,
@@ -42,7 +39,7 @@ namespace AquaVeil
         public void Drawing()
         {
             Bitmap bmp = new Bitmap(pb_main.Width,pb_main.Height);
-            Graphics g = Graphics.FromImage(bmp as Image); // Тут ес чо поправить
+            Graphics g = Graphics.FromImage(bmp as Image);
 
             SolidBrush bb = new SolidBrush(Map.ColorPenBackground);
             SolidBrush bf = new SolidBrush(Map.ColorPenForeground);
