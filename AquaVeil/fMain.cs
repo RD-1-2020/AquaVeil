@@ -31,7 +31,18 @@ namespace AquaVeil
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            ucCanvas.add_frame("drink",1);
+            add_frame("drink",1);
+        }
+        public void add_frame(String name_frame, int num_frame)
+        {
+
+            Graphics g = ucCanvas.pictureBox1.CreateGraphics();
+            ucCanvas.pictureBox1.Invalidate();
+            Image image = ucCanvas.pictureBox1.Image;
+            image.Crop(new Rectangle(0, 0, ucCanvas.Map.Width * ucCanvas.Map.PixelWidth + 2 * ucCanvas.Map.Width,
+                    ucCanvas.Map.Hight * ucCanvas.Map.PixelHight + 2 * ucCanvas.Map.Hight));
+            ucCanvas.listView1.StateImageList.Images.Add(image);
+            ucCanvas.listView1.Items.Add(name_frame, num_frame);
         }
     }
 }
