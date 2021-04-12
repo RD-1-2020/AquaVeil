@@ -23,7 +23,16 @@ namespace AquaVeil
             InitializeComponent();
             Map = new clMap();
         }
-
+        
+        public void add_frame(String name_frame,int num_frame)
+        {
+            Graphics g = pictureBox1.CreateGraphics();
+            Image image = pictureBox1.Image;
+            image.Crop(new Rectangle(0,0,Map.Width * Map.PixelWidth + 2* Map.Width,
+                    Map.Hight * Map.PixelHight + 2 * Map.Hight));
+            listView1.StateImageList.Images.Add(image);
+            listView1.Items.Add(namecadr,num_cadr);
+        }
         public void Drawing()
         {
             Graphics g = pictureBox1.CreateGraphics();
@@ -42,7 +51,8 @@ namespace AquaVeil
                     else
                         b = bb;
                  
-                    g.FillRectangle(b, _distX+i* Map.PixelWidth, _distY+j*(Map.PixelWidth), Map.PixelWidth-2, Map.PixelHight-2);
+                    g.FillRectangle(b, _distX+i* Map.PixelWidth, _distY+j*(Map.PixelWidth)
+                        , Map.PixelWidth-2, Map.PixelHight-2);
                 }
 
         }
@@ -65,6 +75,18 @@ namespace AquaVeil
             Drawing();
 
             toolStripStatusLabel1.Text = "X=" + x.ToString() + " Y=" + y.ToString() + " xx = " + xx.ToString() + " yy = " + yy.ToString();
+        }
+    }
+    static class ext {
+        public static Image Crop(this Image image, Rectangle selection)
+        {
+            Bitmap bmp = image as Bitmap;
+            if (bmp == null)
+                throw new ArgumentException("No valid bitmap");
+            // Crop the image:
+            Bitmap cropBmp = bmp.Clone(selection, bmp.PixelFormat);
+            image.Dispose();
+            return cropBmp;
         }
     }
 }
