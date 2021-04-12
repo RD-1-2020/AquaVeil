@@ -24,18 +24,12 @@ namespace AquaVeil
             Map = new clMap();
         }
         
-        public void add_frame(String name_frame,int num_frame)
-        {
-            Graphics g = pictureBox1.CreateGraphics();
-            Image image = pictureBox1.Image;
-            image.Crop(new Rectangle(0,0,Map.Width * Map.PixelWidth + 2* Map.Width,
-                    Map.Hight * Map.PixelHight + 2 * Map.Hight));
-            listView1.StateImageList.Images.Add(image);
-            listView1.Items.Add(namecadr,num_cadr);
-        }
+        
         public void Drawing()
         {
-            Graphics g = pictureBox1.CreateGraphics();
+            var bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.Image = bmp;
+            Graphics g = Graphics.FromImage(pictureBox1.Image);
 
             SolidBrush bb = new SolidBrush(Map.ColorPenBackground);
             SolidBrush bf = new SolidBrush(Map.ColorPenForeground);
@@ -54,7 +48,7 @@ namespace AquaVeil
                     g.FillRectangle(b, _distX+i* Map.PixelWidth, _distY+j*(Map.PixelWidth)
                         , Map.PixelWidth-2, Map.PixelHight-2);
                 }
-
+            
         }
 
 
