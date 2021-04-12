@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace AquaVeil
 {
@@ -17,7 +18,7 @@ namespace AquaVeil
 
         private Int32 _distX = 10;
         private Int32 _distY = 10;
-
+        public ImageList frame_list = new ImageList();
         public ucCanvas()
         {
             InitializeComponent();
@@ -26,16 +27,19 @@ namespace AquaVeil
         
         public void add_frame(String name_frame,int num_frame)
         {
-            Graphics g = pictureBox1.CreateGraphics();
-            Image image = pictureBox1.Image;
+            Graphics g = pb_main.CreateGraphics();
+            Image image = pb_main.Image;
             image.Crop(new Rectangle(0,0,Map.Width * Map.PixelWidth + 2* Map.Width,
-                    Map.Hight * Map.PixelHight + 2 * Map.Hight));
-            listView1.StateImageList.Images.Add(image);
-            listView1.Items.Add(namecadr,num_cadr);
+            Map.Hight * Map.PixelHight + 2 * Map.Hight));
+            frame_list.Images.Add(name_frame,image);
+            Debug.WriteLine(frame_list.Images.Count);
+            listView1.SmallImageList = frame_list;
+            listView1.Items.Add(name_frame, num_frame);
         }
         public void Drawing()
         {
-            Graphics g = pictureBox1.CreateGraphics();
+            Bitmap bmp = new Bitmap(pb_main.Width,pb_main.Height);
+            Graphics g = Graphics.FromImage(bmp as Image);
 
             SolidBrush bb = new SolidBrush(Map.ColorPenBackground);
             SolidBrush bf = new SolidBrush(Map.ColorPenForeground);
@@ -54,7 +58,7 @@ namespace AquaVeil
                     g.FillRectangle(b, _distX+i* Map.PixelWidth, _distY+j*(Map.PixelWidth)
                         , Map.PixelWidth-2, Map.PixelHight-2);
                 }
-
+            pb_main.Image = bmp;
         }
 
 

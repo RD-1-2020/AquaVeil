@@ -17,8 +17,6 @@ namespace AquaVeil
         {
             InitializeComponent();
             propertyGrid1.SelectedObject = ucCanvas.Map;
-            ucCanvas.add_pb();
-            
         }
 
         private void ucCanvas1_Load(object sender, EventArgs e)
@@ -33,7 +31,7 @@ namespace AquaVeil
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            
+            ucCanvas.add_frame("drink",1);
         }
     }
 }
