@@ -18,6 +18,8 @@ namespace AquaVeil
         private Int32 _distX;
         private Int32 _distY;
 
+        private Size old_pix;
+
         private double _image_scale = 0.5;
         public double image_scale
         {
@@ -56,8 +58,8 @@ namespace AquaVeil
                     g.FillRectangle(b, _distX + i * Map.PixelWidth, _distY + j * (Map.PixelWidth), 
                         (int)(Map.PixelWidth - 2*_image_scale), (int)(Map.PixelHeight - 2));
                 }
-            Map.PixelWidth = 15; //вооооооооооооотттттт
-            Map.PixelHeight = 15;
+            Map.PixelWidth = old_pix.Width; //вооооооооооооотттттт
+            Map.PixelHeight = old_pix.Height;
 
         }
         public clMap this[int index] {
@@ -65,6 +67,7 @@ namespace AquaVeil
                 return _Map[index];
             } set {
                 _Map.Add(value);
+                old_pix = new Size(_Map[index].PixelWidth, _Map[index].PixelHeight);
                 _Map[index].PixelHeight = (int)((double)_Map[index].PixelHeight * _image_scale);
                 _Map[index].PixelWidth = (int)((double)_Map[index].PixelWidth * _image_scale);
                 Frame_bmp = new Bitmap(_distX + _Map[index].Width * _Map[index].PixelWidth,

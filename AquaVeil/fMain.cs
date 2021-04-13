@@ -19,5 +19,10 @@ namespace AquaVeil
             //propertyGrid1.SelectedObject = clMap;
             propertyGrid1.SelectedObject = ucCanvas1.Map;
         }
+
+        private void fMain_SizeChanged(object sender, EventArgs e)
+        {
+            Refresh(); //Блин как сделать то
+        }
     }
 }
