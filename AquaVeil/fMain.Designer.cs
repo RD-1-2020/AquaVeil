@@ -154,6 +154,7 @@ namespace AquaVeil
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "fMain";
             this.Text = "Form1";
+            this.SizeChanged += new System.EventHandler(this.fMain_SizeChanged);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
