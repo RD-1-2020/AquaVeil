@@ -87,7 +87,7 @@ namespace AquaVeil
             {
                 frames[i] = clMapList[i];
                 g.DrawImage(frames[i].pic, img_point);
-                img_point.X += (int)(_distX + Map.Width * Map.PixelWidth * frames.image_scale);
+                img_point.X += (int)( Map.Width * (Map.PixelWidth * frames.image_scale)-2/frames.image_scale);
             }
             Map = new clMap();
             Debug.WriteLine(clMapList.Count);
