@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections;
 using System.Diagnostics;
 
 namespace AquaVeil
@@ -16,45 +15,58 @@ namespace AquaVeil
     {
 
         public clMap Map;
-        public Frames frames = new Frames(_distX, _distY);
-        public List<clMap> clMapList = new List<clMap>();
 
-
-        static private Int32 _distX = 10;
-        static private Int32 _distY = 10;
-        
+        private Int32 _distX = 10;
+        private Int32 _distY = 10;
+        public ImageList frame_list = new ImageList();
         public ucCanvas()
         {
             InitializeComponent();
             Map = new clMap();
-            propertyGrid1.SelectedObject = Map;
         }
-
+        
+        public void add_frame(String name_frame,int num_frame)
+        {
+            // Короче хер его знает, можно попробовать перерисовывать в лист вью, я просто так ебал
+            // можно сделать эрейлист кадров(2), а кадры сделать классами (1)
+            // ну а у кадров сделать их положение и потом хуярить их в листвью(3) (можно и пб)
+            Graphics g = pb_main.CreateGraphics();
+            Image image = pb_main.Image;
+            image.Crop(new Rectangle(0,0,Map.Width * Map.PixelWidth + 2* Map.Width,
+            Map.Hight * Map.PixelHight + 2 * Map.Hight));
+            frame_list.Images.Add(name_frame,image);
+            Debug.WriteLine(frame_list.Images.Count);
+            listView1.SmallImageList = frame_list;
+            listView1.Items.Add(name_frame, num_frame);
+        }
         public void Drawing()
         {
-            Graphics g = this._main.CreateGraphics();
+            Bitmap bmp = new Bitmap(pb_main.Width,pb_main.Height);
+            Graphics g = Graphics.FromImage(bmp as Image); // Тут ес чо поправить
 
             SolidBrush bb = new SolidBrush(Map.ColorPenBackground);
             SolidBrush bf = new SolidBrush(Map.ColorPenForeground);
             SolidBrush b;
             Pen pb = new Pen(bb);
             Pen pf = new Pen(bf);
+
             for (int i = 0; i < Map.Width; i++)
-                for (int j = 0; j < Map.Height; j++)
+                for (int j = 0; j < Map.Width; j++)
                 {
                     if (Map.MapCanvas[i][j] == 0)
                         b = bf;
                     else
                         b = bb;
                  
-                    g.FillRectangle(b, _distX+i* Map.PixelWidth, _distY+j*(Map.PixelWidth), Map.PixelWidth-2, Map.PixelHeight-2);
+                    g.FillRectangle(b, _distX+i* Map.PixelWidth, _distY+j*(Map.PixelWidth)
+                        , Map.PixelWidth-2, Map.PixelHight-2);
                 }
-
+            pb_main.Image = bmp;
         }
+
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            _main.CreateGraphics().Clear(_main.BackColor);
             Drawing();
         }
 
@@ -64,63 +76,24 @@ namespace AquaVeil
             Int32 y = e.Y;
 
             Int32 xx = (x - _distX) / Map.PixelWidth;
-            Int32 yy = (y - _distY) / Map.PixelHeight;
+            Int32 yy = (y - _distY) / Map.PixelHight;
 
             Map.InvertPixel(xx, yy);
             Drawing();
 
             toolStripStatusLabel1.Text = "X=" + x.ToString() + " Y=" + y.ToString() + " xx = " + xx.ToString() + " yy = " + yy.ToString();
         }
-
-        private void lb_clear_Click(object sender, EventArgs e)
+    }
+    static class ext {
+        public static Image Crop(this Image image, Rectangle selection)
         {
-            Refresh();
-            Map.CreateCanvas();
-            Drawing();
-        }
-        //xernya?
-        public void resize() {
-            Graphics g = pb_cadr_list.CreateGraphics();
-            frames = new Frames(_distX, _distY);
-            Point img_point = new Point(1, 1);
-            for (int i = 0; i < clMapList.Count; i++)
-            {
-                frames[i] = clMapList[i];
-                g.DrawImage(frames[i].pic, img_point);
-                img_point.X += (int)(Map.Width * (Map.PixelWidth * frames.image_scale) - 2 / frames.image_scale);
-            }
-            Map = new clMap();
-            Debug.WriteLine(clMapList.Count);
-            Map.CreateCanvas();
-        }
-
-        public void lb_savefr_Click(object sender, EventArgs e)
-        {
-            Refresh();
-            Graphics g = pb_cadr_list.CreateGraphics();
-            g.Clear(Color.Silver);
-            clMapList.Add(Map);
-            frames = new Frames(_distX, _distY);
-            int i = 0;
-            foreach (var element in clMapList) {
-                frames[i] = element;
-                i++;
-            }
-            new Drawer_Frames(frames,frames.image_scale).Drawing(g,pb_cadr_list.Width);
-            Map = new clMap();
-            propertyGrid1.SelectedObject = Map;
-            Debug.WriteLine(clMapList.Count);
-            Map.CreateCanvas();
-            Drawing();
-        }
-
-        private void SB_frame_Scroll(object sender, ScrollEventArgs e)
-        {
-            Graphics g = pb_cadr_list.CreateGraphics();
-            g.TranslateTransform(0,-SB_frame.Value);
-            g.Clear(pb_cadr_list.BackColor);
-            new Drawer_Frames(frames, frames.image_scale).Drawing(g, pb_cadr_list.Width);
-
+            Bitmap bmp = image as Bitmap;
+            if (bmp == null)
+                throw new ArgumentException("No valid bitmap");
+            // Crop the image:
+            Bitmap cropBmp = bmp.Clone(selection, bmp.PixelFormat);
+            image.Dispose();
+            return cropBmp;
         }
     }
 }

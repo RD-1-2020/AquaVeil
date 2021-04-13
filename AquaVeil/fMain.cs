@@ -16,13 +16,22 @@ namespace AquaVeil
         public fMain()
         {
             InitializeComponent();
-            //propertyGrid1.SelectedObject = clMap;
-            
+            propertyGrid1.SelectedObject = ucCanvas.Map;
         }
 
-        private void fMain_SizeChanged(object sender, EventArgs e)
+        private void ucCanvas1_Load(object sender, EventArgs e)
         {
-            Refresh(); //Блин как сделать то
+
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ucCanvas.add_frame("drink",1);
         }
     }
 }
