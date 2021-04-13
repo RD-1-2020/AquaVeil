@@ -17,6 +17,7 @@ namespace AquaVeil
         {
             InitializeComponent();
             //propertyGrid1.SelectedObject = clMap;
+            propertyGrid1.SelectedObject = ucCanvas1.Map;
         }
     }
 }
