@@ -76,7 +76,22 @@ namespace AquaVeil
             Drawing();
         }
 
-        private void lb_savefr_Click(object sender, EventArgs e)
+        public void resize() {
+            Graphics g = pb_cadr_list.CreateGraphics();
+            frames = new Frames(_distX, _distY);
+            Point img_point = new Point(1, 1);
+            for (int i = 0; i < clMapList.Count; i++)
+            {
+                frames[i] = clMapList[i];
+                g.DrawImage(frames[i].pic, img_point);
+                img_point.X += (int)(Map.Width * (Map.PixelWidth * frames.image_scale) - 2 / frames.image_scale);
+            }
+            Map = new clMap();
+            Debug.WriteLine(clMapList.Count);
+            Map.CreateCanvas();
+        }
+
+        public void lb_savefr_Click(object sender, EventArgs e)
         {
             Graphics g = pb_cadr_list.CreateGraphics();
             g.Clear(Color.Gray);

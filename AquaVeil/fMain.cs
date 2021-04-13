@@ -18,5 +18,10 @@ namespace AquaVeil
             InitializeComponent();
             //propertyGrid1.SelectedObject = clMap;
         }
+
+        private void fMain_SizeChanged(object sender, EventArgs e)
+        {
+            Refresh(); //Блин как сделать то
+        }
     }
 }

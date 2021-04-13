@@ -36,16 +36,22 @@ namespace AquaVeil
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.lb_clear = new System.Windows.Forms.ToolStripLabel();
+            this.lb_savefr = new System.Windows.Forms.ToolStripLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this._main = new System.Windows.Forms.PictureBox();
+            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
+            this.pb_cadr_list = new System.Windows.Forms.PictureBox();
+            this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.fontDialog2 = new System.Windows.Forms.FontDialog();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._main)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_cadr_list)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -66,13 +72,14 @@ namespace AquaVeil
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
-            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1});
+            this.toolStripButton1,
+            this.lb_clear,
+            this.lb_savefr});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(857, 25);
@@ -89,6 +96,20 @@ namespace AquaVeil
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
+            // lb_clear
+            // 
+            this.lb_clear.Name = "lb_clear";
+            this.lb_clear.Size = new System.Drawing.Size(59, 22);
+            this.lb_clear.Text = "Очистить";
+            this.lb_clear.Click += new System.EventHandler(this.lb_clear_Click);
+            // 
+            // lb_savefr
+            // 
+            this.lb_savefr.Name = "lb_savefr";
+            this.lb_savefr.Size = new System.Drawing.Size(94, 22);
+            this.lb_savefr.Text = "Сохранить кадр";
+            this.lb_savefr.Click += new System.EventHandler(this.lb_savefr_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -98,34 +119,43 @@ namespace AquaVeil
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.pictureBox1);
+            this.splitContainer1.Panel1.Controls.Add(this._main);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.listView1);
+            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.splitContainer1.Panel2.Controls.Add(this.vScrollBar1);
+            this.splitContainer1.Panel2.Controls.Add(this.pb_cadr_list);
             this.splitContainer1.Size = new System.Drawing.Size(857, 451);
             this.splitContainer1.SplitterDistance = 377;
             this.splitContainer1.TabIndex = 2;
             // 
-            // pictureBox1
+            // _main
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(857, 377);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
+            this._main.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._main.Location = new System.Drawing.Point(0, 0);
+            this._main.Name = "_main";
+            this._main.Size = new System.Drawing.Size(857, 377);
+            this._main.TabIndex = 0;
+            this._main.TabStop = false;
+            this._main.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             // 
-            // listView1
+            // vScrollBar1
             // 
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(0, 0);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(857, 70);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.vScrollBar1.Location = new System.Drawing.Point(836, 0);
+            this.vScrollBar1.Name = "vScrollBar1";
+            this.vScrollBar1.Size = new System.Drawing.Size(21, 70);
+            this.vScrollBar1.TabIndex = 1;
+            // 
+            // pb_cadr_list
+            // 
+            this.pb_cadr_list.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pb_cadr_list.Location = new System.Drawing.Point(0, 0);
+            this.pb_cadr_list.Name = "pb_cadr_list";
+            this.pb_cadr_list.Size = new System.Drawing.Size(857, 70);
+            this.pb_cadr_list.TabIndex = 0;
+            this.pb_cadr_list.TabStop = false;
             // 
             // ucCanvas
             // 
@@ -144,7 +174,8 @@ namespace AquaVeil
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._main)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_cadr_list)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -158,7 +189,12 @@ namespace AquaVeil
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        public System.Windows.Forms.PictureBox pictureBox1;
-        public System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.PictureBox _main;
+        private System.Windows.Forms.FontDialog fontDialog1;
+        private System.Windows.Forms.FontDialog fontDialog2;
+        private System.Windows.Forms.PictureBox pb_cadr_list;
+        private System.Windows.Forms.ToolStripLabel lb_clear;
+        private System.Windows.Forms.VScrollBar vScrollBar1;
+        public System.Windows.Forms.ToolStripLabel lb_savefr;
     }
 }
