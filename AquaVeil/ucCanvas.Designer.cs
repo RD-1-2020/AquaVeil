@@ -40,10 +40,10 @@ namespace AquaVeil
             this.lb_savefr = new System.Windows.Forms.ToolStripLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this._main = new System.Windows.Forms.PictureBox();
+            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.pb_cadr_list = new System.Windows.Forms.PictureBox();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.fontDialog2 = new System.Windows.Forms.FontDialog();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -140,6 +140,14 @@ namespace AquaVeil
             this._main.TabStop = false;
             this._main.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             // 
+            // vScrollBar1
+            // 
+            this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.vScrollBar1.Location = new System.Drawing.Point(836, 0);
+            this.vScrollBar1.Name = "vScrollBar1";
+            this.vScrollBar1.Size = new System.Drawing.Size(21, 70);
+            this.vScrollBar1.TabIndex = 1;
+            // 
             // pb_cadr_list
             // 
             this.pb_cadr_list.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -148,14 +156,6 @@ namespace AquaVeil
             this.pb_cadr_list.Size = new System.Drawing.Size(857, 70);
             this.pb_cadr_list.TabIndex = 0;
             this.pb_cadr_list.TabStop = false;
-            // 
-            // vScrollBar1
-            // 
-            this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar1.Location = new System.Drawing.Point(836, 0);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(21, 70);
-            this.vScrollBar1.TabIndex = 1;
             // 
             // ucCanvas
             // 
@@ -194,7 +194,7 @@ namespace AquaVeil
         private System.Windows.Forms.FontDialog fontDialog2;
         private System.Windows.Forms.PictureBox pb_cadr_list;
         private System.Windows.Forms.ToolStripLabel lb_clear;
-        private System.Windows.Forms.ToolStripLabel lb_savefr;
         private System.Windows.Forms.VScrollBar vScrollBar1;
+        public System.Windows.Forms.ToolStripLabel lb_savefr;
     }
 }
