@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace AquaVeil
 {
@@ -17,16 +18,31 @@ namespace AquaVeil
 
         private Int32 _distX = 10;
         private Int32 _distY = 10;
-
+        public ImageList frame_list = new ImageList();
         public ucCanvas()
         {
             InitializeComponent();
             Map = new clMap();
         }
-
+        
+        public void add_frame(String name_frame,int num_frame)
+        {
+            // Короче хер его знает, можно попробовать перерисовывать в лист вью, я просто так ебал
+            // можно сделать эрейлист кадров(2), а кадры сделать классами (1)
+            // ну а у кадров сделать их положение и потом хуярить их в листвью(3) (можно и пб)
+            Graphics g = pb_main.CreateGraphics();
+            Image image = pb_main.Image;
+            image.Crop(new Rectangle(0,0,Map.Width * Map.PixelWidth + 2* Map.Width,
+            Map.Hight * Map.PixelHight + 2 * Map.Hight));
+            frame_list.Images.Add(name_frame,image);
+            Debug.WriteLine(frame_list.Images.Count);
+            listView1.SmallImageList = frame_list;
+            listView1.Items.Add(name_frame, num_frame);
+        }
         public void Drawing()
         {
-            Graphics g = pictureBox1.CreateGraphics();
+            Bitmap bmp = new Bitmap(pb_main.Width,pb_main.Height);
+            Graphics g = Graphics.FromImage(bmp as Image); // Тут ес чо поправить
 
             SolidBrush bb = new SolidBrush(Map.ColorPenBackground);
             SolidBrush bf = new SolidBrush(Map.ColorPenForeground);
@@ -42,9 +58,10 @@ namespace AquaVeil
                     else
                         b = bb;
                  
-                    g.FillRectangle(b, _distX+i* Map.PixelWidth, _distY+j*(Map.PixelWidth), Map.PixelWidth-2, Map.PixelHight-2);
+                    g.FillRectangle(b, _distX+i* Map.PixelWidth, _distY+j*(Map.PixelWidth)
+                        , Map.PixelWidth-2, Map.PixelHight-2);
                 }
-
+            pb_main.Image = bmp;
         }
 
 
@@ -65,6 +82,18 @@ namespace AquaVeil
             Drawing();
 
             toolStripStatusLabel1.Text = "X=" + x.ToString() + " Y=" + y.ToString() + " xx = " + xx.ToString() + " yy = " + yy.ToString();
+        }
+    }
+    static class ext {
+        public static Image Crop(this Image image, Rectangle selection)
+        {
+            Bitmap bmp = image as Bitmap;
+            if (bmp == null)
+                throw new ArgumentException("No valid bitmap");
+            // Crop the image:
+            Bitmap cropBmp = bmp.Clone(selection, bmp.PixelFormat);
+            image.Dispose();
+            return cropBmp;
         }
     }
 }
