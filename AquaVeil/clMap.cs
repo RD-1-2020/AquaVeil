@@ -10,15 +10,23 @@ namespace AquaVeil
 {
     public class clMap
     {
-        private Int32 _Hight = 10;
-        private Int32 _Width = 10;
+        private Int32 _Height = 10;
+        private Int32 _Width = 100;
 
-        private Int32 _PixelHight = 15;
+        private Int32 _PixelHeight = 15;
         private Int32 _PixelWidth = 15;
 
         private Color _ColorPenForeground = Color.Red;
         private Color _ColorPenBackground = Color.White;
 
+        private Bitmap _pic; //Поле изображения рисунка
+        public Bitmap pic { get
+            {
+                return _pic;
+            }
+            set {
+                _pic = value;
+            } }
 
         private Int32[][] _MapCanvas;
 
@@ -28,10 +36,10 @@ namespace AquaVeil
         [DisplayName("Высота")]
         [Category("Поле")]
         [Description("Высота поля")]
-        public Int32 Hight
+        public Int32 Height
         {
-            set { _Hight = value; }
-            get { return _Hight; }
+            set { _Height = value; }
+            get { return _Height; }
         }
 
         /// <summary>
@@ -54,10 +62,10 @@ namespace AquaVeil
         [DisplayName("Высота пикселя")]
         [Category("Пиксель")]
         [Description("Ширина поля")]
-        public Int32 PixelHight
+        public Int32 PixelHeight
         {
-            set { _PixelHight = value; }
-            get { return _PixelHight; }
+            set { _PixelHeight = value; }
+            get { return _PixelHeight; }
         }
 
 
@@ -111,11 +119,11 @@ namespace AquaVeil
         {
             _MapCanvas = new Int32[_Width][];
             for (int i = 0; i < _Width; i++)
-                _MapCanvas[i] = new Int32[_Hight];
+                _MapCanvas[i] = new Int32[_Height];
 
 
             for (int i = 0; i < _Width; i++)
-                for (int j = 0; j < _Hight; j++)
+                for (int j = 0; j < _Height; j++)
                     _MapCanvas[i][j] = 0;
         }
 
@@ -125,21 +133,20 @@ namespace AquaVeil
         {
             _MapCanvas = new Int32[_Width][];
             for (int i = 0; i < _Width; i++)
-                _MapCanvas[i] = new Int32[_Hight];
+                _MapCanvas[i] = new Int32[_Height];
 
 
             for (int i = 0; i < _Width; i++)
-                for (int j = 0; j < _Hight; j++)
+                for (int j = 0; j < _Height; j++)
                     _MapCanvas[i][j] = 0;
         }
 
-
         public Boolean InvertPixel(Int32 x, Int32 y)
         {
-            if (x > Width)
+            if (x >= Width || x<0)
                 return false;
 
-            if (x > Hight)
+            if (y >= Height || y<0)
                 return false;
 
             if (MapCanvas[x][y] == 0)
