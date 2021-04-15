@@ -27,7 +27,6 @@ namespace AquaVeil
         {
             InitializeComponent();
             Map = new clMap();
-            propertyGrid1.SelectedObject = Map;
         }
 
         public void Drawing()
@@ -54,7 +53,6 @@ namespace AquaVeil
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            _main.CreateGraphics().Clear(_main.BackColor);
             Drawing();
         }
 
@@ -74,11 +72,10 @@ namespace AquaVeil
 
         private void lb_clear_Click(object sender, EventArgs e)
         {
-            Refresh();
             Map.CreateCanvas();
             Drawing();
         }
-        //xernya?
+
         public void resize() {
             Graphics g = pb_cadr_list.CreateGraphics();
             frames = new Frames(_distX, _distY);
@@ -96,31 +93,21 @@ namespace AquaVeil
 
         public void lb_savefr_Click(object sender, EventArgs e)
         {
-            Refresh();
             Graphics g = pb_cadr_list.CreateGraphics();
-            g.Clear(Color.Silver);
+            g.Clear(Color.Gray);
             clMapList.Add(Map);
             frames = new Frames(_distX, _distY);
-            int i = 0;
-            foreach (var element in clMapList) {
-                frames[i] = element;
-                i++;
+            Point img_point = new Point(1, 1);
+            for (int i = 0; i < clMapList.Count; i++)
+            {
+                frames[i] = clMapList[i];
+                g.DrawImage(frames[i].pic, img_point);
+                img_point.X += (int)( Map.Width * (Map.PixelWidth * frames.image_scale)-2/frames.image_scale);
             }
-            new Drawer_Frames(frames,frames.image_scale).Drawing(g,pb_cadr_list.Width);
             Map = new clMap();
-            propertyGrid1.SelectedObject = Map;
             Debug.WriteLine(clMapList.Count);
             Map.CreateCanvas();
             Drawing();
-        }
-
-        private void SB_frame_Scroll(object sender, ScrollEventArgs e)
-        {
-            Graphics g = pb_cadr_list.CreateGraphics();
-            g.TranslateTransform(0,-SB_frame.Value);
-            g.Clear(pb_cadr_list.BackColor);
-            new Drawer_Frames(frames, frames.image_scale).Drawing(g, pb_cadr_list.Width);
-
         }
     }
 }
