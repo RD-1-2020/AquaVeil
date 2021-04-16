@@ -16,7 +16,7 @@ namespace AquaVeil
     {
 
         public clMap Map;
-        public Frames frames = new Frames(_distX, _distY);
+        public Frames frames = new Frames();
         public List<clMap> clMapList = new List<clMap>();
 
 
@@ -79,20 +79,6 @@ namespace AquaVeil
             Drawing();
         }
         //xernya?
-        public void resize() {
-            Graphics g = pb_cadr_list.CreateGraphics();
-            frames = new Frames(_distX, _distY);
-            Point img_point = new Point(1, 1);
-            for (int i = 0; i < clMapList.Count; i++)
-            {
-                frames[i] = clMapList[i];
-                g.DrawImage(frames[i].pic, img_point);
-                img_point.X += (int)(Map.Width * (Map.PixelWidth * frames.image_scale) - 2 / frames.image_scale);
-            }
-            Map = new clMap();
-            Debug.WriteLine(clMapList.Count);
-            Map.CreateCanvas();
-        }
 
         public void lb_savefr_Click(object sender, EventArgs e)
         {
@@ -100,7 +86,7 @@ namespace AquaVeil
             Graphics g = pb_cadr_list.CreateGraphics();
             g.Clear(Color.Silver);
             clMapList.Add(Map);
-            frames = new Frames(_distX, _distY);
+            frames = new Frames();
             int i = 0;
             foreach (var element in clMapList) {
                 frames[i] = element;
@@ -121,6 +107,32 @@ namespace AquaVeil
             g.Clear(pb_cadr_list.BackColor);
             new Drawer_Frames(frames, frames.image_scale).Drawing(g, pb_cadr_list.Width);
 
+        }
+
+        private void pb_cadr_list_MouseClick(object sender, MouseEventArgs e)
+
+        {
+            frames = new Frames();
+            int i = 0;
+            foreach (var element in clMapList)
+            {
+                frames[i] = element;
+                i++;
+            }
+            Graphics g = pb_cadr_list.CreateGraphics();
+            var drawer = (new Drawer_Frames(frames, frames.image_scale));
+            drawer.Drawing(g,pb_cadr_list.Width);
+            int X = e.X;
+            int Y = e.Y;
+            int xx = X/ drawer.frame_wh;
+            int yy = Y / drawer.frame_hh;
+            toolStripStatusLabel1.Text = "X=" + X.ToString() + " Y=" + Y.ToString() + " xx = " + xx.ToString() + " yy = " + yy.ToString();
+            if (drawer.is_frame(xx, yy)) {
+                Map = drawer.frames_array[xx][yy];
+                _main.CreateGraphics().Clear(_main.BackColor);
+                Drawing();
+            }
+            propertyGrid1.SelectedObject = Map;
         }
     }
 }

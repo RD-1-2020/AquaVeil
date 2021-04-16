@@ -170,6 +170,7 @@ namespace AquaVeil
             this.pb_cadr_list.Size = new System.Drawing.Size(857, 70);
             this.pb_cadr_list.TabIndex = 0;
             this.pb_cadr_list.TabStop = false;
+            this.pb_cadr_list.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_cadr_list_MouseClick);
             // 
             // ucCanvas
             // 
