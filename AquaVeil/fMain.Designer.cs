@@ -38,7 +38,6 @@ namespace AquaVeil
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.ucCanvas1 = new AquaVeil.ucCanvas();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -114,19 +113,10 @@ namespace AquaVeil
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.propertyGrid1);
             this.splitContainer1.Panel2.Controls.Add(this.ucCanvas1);
             this.splitContainer1.Size = new System.Drawing.Size(903, 509);
             this.splitContainer1.SplitterDistance = 194;
             this.splitContainer1.TabIndex = 3;
-            // 
-            // propertyGrid1
-            // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.propertyGrid1.Location = new System.Drawing.Point(470, 0);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(154, 379);
-            this.propertyGrid1.TabIndex = 1;
             // 
             // ucCanvas1
             // 
@@ -171,7 +161,6 @@ namespace AquaVeil
         private System.Windows.Forms.ToolStripMenuItem mnuExit;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private ucCanvas ucCanvas1;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
     }
 }
 
