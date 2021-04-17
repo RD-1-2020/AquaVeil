@@ -39,8 +39,9 @@ namespace AquaVeil
             this.lb_clear = new System.Windows.Forms.ToolStripLabel();
             this.lb_savefr = new System.Windows.Forms.ToolStripLabel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this._main = new System.Windows.Forms.PictureBox();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
+            this.SB_frame = new System.Windows.Forms.VScrollBar();
             this.pb_cadr_list = new System.Windows.Forms.PictureBox();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.fontDialog2 = new System.Windows.Forms.FontDialog();
@@ -119,19 +120,29 @@ namespace AquaVeil
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.propertyGrid1);
             this.splitContainer1.Panel1.Controls.Add(this._main);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.splitContainer1.Panel2.Controls.Add(this.vScrollBar1);
+            this.splitContainer1.Panel2.Controls.Add(this.SB_frame);
             this.splitContainer1.Panel2.Controls.Add(this.pb_cadr_list);
             this.splitContainer1.Size = new System.Drawing.Size(857, 451);
             this.splitContainer1.SplitterDistance = 377;
             this.splitContainer1.TabIndex = 2;
             // 
+            // propertyGrid1
+            // 
+            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.propertyGrid1.Location = new System.Drawing.Point(695, 0);
+            this.propertyGrid1.Name = "propertyGrid1";
+            this.propertyGrid1.Size = new System.Drawing.Size(162, 377);
+            this.propertyGrid1.TabIndex = 1;
+            // 
             // _main
             // 
+            this._main.BackColor = System.Drawing.Color.Silver;
             this._main.Dock = System.Windows.Forms.DockStyle.Fill;
             this._main.Location = new System.Drawing.Point(0, 0);
             this._main.Name = "_main";
@@ -140,16 +151,19 @@ namespace AquaVeil
             this._main.TabStop = false;
             this._main.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             // 
-            // vScrollBar1
+            // SB_frame
             // 
-            this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar1.Location = new System.Drawing.Point(836, 0);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(21, 70);
-            this.vScrollBar1.TabIndex = 1;
+            this.SB_frame.Dock = System.Windows.Forms.DockStyle.Right;
+            this.SB_frame.Location = new System.Drawing.Point(836, 0);
+            this.SB_frame.Maximum = 1000;
+            this.SB_frame.Name = "SB_frame";
+            this.SB_frame.Size = new System.Drawing.Size(21, 70);
+            this.SB_frame.TabIndex = 1;
+            this.SB_frame.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SB_frame_Scroll);
             // 
             // pb_cadr_list
             // 
+            this.pb_cadr_list.BackColor = System.Drawing.Color.Silver;
             this.pb_cadr_list.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pb_cadr_list.Location = new System.Drawing.Point(0, 0);
             this.pb_cadr_list.Name = "pb_cadr_list";
@@ -195,7 +209,8 @@ namespace AquaVeil
         private System.Windows.Forms.FontDialog fontDialog2;
         private System.Windows.Forms.PictureBox pb_cadr_list;
         private System.Windows.Forms.ToolStripLabel lb_clear;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
+        private System.Windows.Forms.VScrollBar SB_frame;
         public System.Windows.Forms.ToolStripLabel lb_savefr;
+        private System.Windows.Forms.PropertyGrid propertyGrid1;
     }
 }
