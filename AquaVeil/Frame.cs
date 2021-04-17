@@ -67,50 +67,39 @@ namespace AquaVeil
 
         public void Drawing(Graphics g, int width)
         {
+
+            int k =0;
+            for (k =0; k < width; k+=frame_width) { 
+            }
+            _frames_array = new clMap[k/ frame_width][];
+            
             Point img_point = new Point(10, 10);
             int i = 0;
             int j = 0;
-            foreach (var frame in Dictionary_Frames.Values)
-            { 
-                if (img_point.X + frame_width < width)
-                {
-                    i++;
-                    img_point.X += frame_width;
-                }
-                else
-                {
-                    j++;
-                    i = 0;
-                    img_point.X = 10;
-                    img_point.Y += frame_height;
-                }
-            }
-            _frames_array = new clMap[img_point.X / frame_width+1][];
-            for (int k = 0; k < img_point.X / frame_width + 1; k++)
+            for (i = 0; i < (k / frame_width); i++)
             {
-                _frames_array[k] = new clMap[j];
+                _frames_array[i] = new clMap[(Dictionary_Frames.Values.Count) / (k/ frame_width) +1];
             }
-            img_point = new Point(10, 10);
             i = 0;
             j = 0;
-            
             foreach (var frame in Dictionary_Frames.Values) {
-                
+
                 /*_frames_array[i][j] = frame;*/
                 g.DrawImage(frame.pic, img_point);
                 if (img_point.X + frame_width < width)
                 {
                     i++;
                     img_point.X += frame_width;
-                    _frames_array[i - 1][j] = frame;
+                    _frames_array[i-1][j] = frame;
                 }
                 else
                 {
+                    _frames_array[i][j] = frame;
                     j++;
                     i = 0;
                     img_point.X = 10;
                     img_point.Y += frame_height;
-                    _frames_array[i][j-1] = frame;
+                    
                 }
             }
         }

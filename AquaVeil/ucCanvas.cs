@@ -22,6 +22,8 @@ namespace AquaVeil
 
         static private Int32 _distX = 10;
         static private Int32 _distY = 10;
+
+        bool is_copy = false;
         
         public ucCanvas()
         {
@@ -84,11 +86,18 @@ namespace AquaVeil
         {
             Refresh();
             Graphics g = pb_cadr_list.CreateGraphics();
-            g.Clear(Color.Silver);
-            clMapList.Add(Map);
+                g.Clear(Color.Silver);
+            if (!is_copy)
+            {
+                clMapList.Add(Map);
+            }
+            else {
+                is_copy = false;
+            }
             frames = new Frames();
             int i = 0;
-            foreach (var element in clMapList) {
+            foreach (var element in clMapList)
+            {
                 frames[i] = element;
                 i++;
             }
@@ -131,6 +140,7 @@ namespace AquaVeil
                 Map = drawer.frames_array[xx][yy];
                 _main.CreateGraphics().Clear(_main.BackColor);
                 Drawing();
+                is_copy = true;
             }
             propertyGrid1.SelectedObject = Map;
         }
