@@ -10,8 +10,8 @@ namespace AquaVeil
 {
     public class clMap
     {
-        private Int32 _Height = 30;
-        private Int32 _Width = 30;
+        private Int32 _Height = 10;
+        private Int32 _Width = 100;
 
         private Int32 _PixelHeight = 15;
         private Int32 _PixelWidth = 15;
