@@ -78,7 +78,7 @@ namespace AquaVeil
             int j = 0;
             for (i = 0; i < (k / frame_width); i++)
             {
-                _frames_array[i] = new clMap[(Dictionary_Frames.Values.Count) / (k/ frame_width) +1];
+                _frames_array[i] = new clMap[(Dictionary_Frames.Values.Count) / (k/frame_width) +1];
             }
             i = 0;
             j = 0;
@@ -88,9 +88,10 @@ namespace AquaVeil
                 g.DrawImage(frame.pic, img_point);
                 if (img_point.X + frame_width < width)
                 {
+                    _frames_array[i][j] = frame;
                     i++;
                     img_point.X += frame_width;
-                    _frames_array[i-1][j] = frame;
+                    //_frames_array[i-1][j] = frame;
                 }
                 else
                 {
