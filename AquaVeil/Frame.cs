@@ -48,7 +48,7 @@ namespace AquaVeil
                 i++;
             }
             _scale = scale;
-            frame_width = (int)(frames.Map[0].Width * frames.Map[0].PixelWidth * _scale - 70 * _scale);
+            frame_width = (int)(frames.Map[0].Width * frames.Map[0].PixelWidth * _scale);
             frame_height = (int)(frames.Map[0].Height * frames.Map[0].PixelHeight * _scale);
             /*frame_width = (int)(frames.Map[0].Width * (frames.Map[0].PixelWidth * scale) - 40 * scale);
             frame_height = (int)(frames.Map[0].Height * (frames.Map[0].PixelHeight * scale) + 10 * scale);*/
