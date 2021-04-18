@@ -34,6 +34,8 @@ namespace AquaVeil
 
         public void Drawing()
         {
+            if (Map == null)
+                return;
             Graphics g = this._main.CreateGraphics();
 
             SolidBrush bb = new SolidBrush(Map.ColorPenBackground);
@@ -111,6 +113,8 @@ namespace AquaVeil
 
         private void SB_frame_Scroll(object sender, ScrollEventArgs e)
         {
+            if (frames.Map.Count== 0)
+                return;
             Graphics g = pb_cadr_list.CreateGraphics();
             g.TranslateTransform(0,-SB_frame.Value);
             g.Clear(pb_cadr_list.BackColor);
@@ -121,7 +125,13 @@ namespace AquaVeil
         private void pb_cadr_list_MouseClick(object sender, MouseEventArgs e)
 
         {
+            if (clMapList.Count == 0)
+                return;
             frames = new Frames();
+
+            Graphics g1 = pb_cadr_list.CreateGraphics();
+            g1.TranslateTransform(0, -SB_frame.Value);
+            g1.Clear(pb_cadr_list.BackColor);
             int i = 0;
             foreach (var element in clMapList)
             {
@@ -129,12 +139,13 @@ namespace AquaVeil
                 i++;
             }
             Graphics g = pb_cadr_list.CreateGraphics();
+            g.TranslateTransform(0, -SB_frame.Value);
             var drawer = (new Drawer_Frames(frames, frames.image_scale));
             drawer.Drawing(g,pb_cadr_list.Width);
             int X = e.X;
             int Y = e.Y;
-            int xx = X/ drawer.frame_wh;
-            int yy = Y / drawer.frame_hh;
+            int xx = (X)/ drawer.frame_wh;
+            int yy = (Y + SB_frame.Value) / drawer.frame_hh;
             toolStripStatusLabel1.Text = "X=" + X.ToString() + " Y=" + Y.ToString() + " xx = " + xx.ToString() + " yy = " + yy.ToString();
             if (drawer.is_frame(xx, yy)) {
                 Map = drawer.frames_array[xx][yy];
@@ -143,6 +154,7 @@ namespace AquaVeil
                 is_copy = true;
             }
             propertyGrid1.SelectedObject = Map;
+            
         }
     }
 }
