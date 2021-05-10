@@ -82,13 +82,13 @@ namespace AquaVeil
             Map.CreateCanvas();
             Drawing();
         }
-        //xernya?
 
         public void lb_savefr_Click(object sender, EventArgs e)
         {
             Refresh();
             Graphics g = pb_cadr_list.CreateGraphics();
                 g.Clear(Color.Silver);
+            g.TranslateTransform(-SB_frame.Value, 0);
             if (!is_copy)
             {
                 clMapList.Add(Map);
@@ -111,15 +111,18 @@ namespace AquaVeil
             Drawing();
         }
 
-        private void SB_frame_Scroll(object sender, ScrollEventArgs e)
-        {
-            if (frames.Map.Count== 0)
+        private void redraw_frame_list() {
+            if (frames.Map.Count == 0)
                 return;
             Graphics g = pb_cadr_list.CreateGraphics();
-            g.TranslateTransform(0,-SB_frame.Value);
+            g.TranslateTransform(-SB_frame.Value, 0);
             g.Clear(pb_cadr_list.BackColor);
             new Drawer_Frames(frames, frames.image_scale).Drawing(g, pb_cadr_list.Width);
+        }
 
+        private void SB_frame_Scroll(object sender, ScrollEventArgs e)
+        {
+            redraw_frame_list();
         }
 
         private void pb_cadr_list_MouseClick(object sender, MouseEventArgs e)
@@ -128,7 +131,6 @@ namespace AquaVeil
             if (clMapList.Count == 0)
                 return;
             frames = new Frames();
-
             Graphics g1 = pb_cadr_list.CreateGraphics();
             g1.TranslateTransform(0, -SB_frame.Value);
             g1.Clear(pb_cadr_list.BackColor);
@@ -142,19 +144,17 @@ namespace AquaVeil
             g.TranslateTransform(0, -SB_frame.Value);
             var drawer = (new Drawer_Frames(frames, frames.image_scale));
             drawer.Drawing(g,pb_cadr_list.Width);
-            int X = e.X;
-            int Y = e.Y;
+            int X = e.X + SB_frame.Value;
             int xx = (X)/ drawer.frame_wh;
-            int yy = (Y + SB_frame.Value) / drawer.frame_hh;
-            toolStripStatusLabel1.Text = "X=" + X.ToString() + " Y=" + Y.ToString() + " xx = " + xx.ToString() + " yy = " + yy.ToString();
-            if (drawer.is_frame(xx, yy)) {
-                Map = drawer.frames_array[xx][yy];
+            toolStripStatusLabel1.Text = "X=" + X.ToString()  + " xx = " + xx.ToString();
+            if (drawer.is_frame(xx)) {
+                Map = drawer.frames_array[xx];
                 _main.CreateGraphics().Clear(_main.BackColor);
                 Drawing();
                 is_copy = true;
             }
             propertyGrid1.SelectedObject = Map;
-            
+            redraw_frame_list();
         }
     }
 }

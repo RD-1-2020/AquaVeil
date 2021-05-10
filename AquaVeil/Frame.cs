@@ -14,9 +14,9 @@ namespace AquaVeil
         private Dictionary<int, clMap> Dictionary_Frames = new Dictionary<int, clMap>();
 
 
-        private clMap[][] _frames_array;
+        private clMap[] _frames_array;
         
-        public clMap[][] frames_array {
+        public clMap[] frames_array {
             get {
                 return _frames_array;
             }
@@ -30,15 +30,6 @@ namespace AquaVeil
                 return frame_width;
             }
         }
-        private int frame_height;
-
-        public int frame_hh
-        {
-            get
-            {
-                return frame_height;
-            }
-        }
 
         double _scale;
         public Drawer_Frames(Frames frames, double scale) {
@@ -48,15 +39,14 @@ namespace AquaVeil
                 i++;
             }
             _scale = scale;
-            frame_width = (int)(frames.Map[0].Width * frames.Map[0].PixelWidth * _scale);
-            frame_height = (int)(frames.Map[0].Height * frames.Map[0].PixelHeight * _scale);
+            frame_width = (int)(frames.Map[0].Width * frames.Map[0].PixelWidth * _scale + 10);
             /*frame_width = (int)(frames.Map[0].Width * (frames.Map[0].PixelWidth * scale) - 40 * scale);
             frame_height = (int)(frames.Map[0].Height * (frames.Map[0].PixelHeight * scale) + 10 * scale);*/
         }
-        public bool is_frame(int x,int y) {
+        public bool is_frame(int x) {
             try
             {
-                clMap sergey = _frames_array[x][y];
+                clMap sergey = _frames_array[x];
                 return true;
             }
             catch {
@@ -67,41 +57,15 @@ namespace AquaVeil
 
         public void Drawing(Graphics g, int width)
         {
-
-            int k =0;
-            for (k =0; k < width; k+=frame_width) { 
-            }
-            _frames_array = new clMap[k/ frame_width][];
-            
-            Point img_point = new Point(10, 10);
+            g.Clear(Color.Gray);
+            _frames_array = new clMap[Dictionary_Frames.Count];
+            int xx = 10;
             int i = 0;
-            int j = 0;
-            for (i = 0; i < (k / frame_width); i++)
-            {
-                _frames_array[i] = new clMap[(Dictionary_Frames.Values.Count) / (k/frame_width) +1];
-            }
-            i = 0;
-            j = 0;
             foreach (var frame in Dictionary_Frames.Values) {
-
-                /*_frames_array[i][j] = frame;*/
-                g.DrawImage(frame.pic, img_point);
-                if (img_point.X + frame_width < width)
-                {
-                    _frames_array[i][j] = frame;
-                    i++;
-                    img_point.X += frame_width;
-                    //_frames_array[i-1][j] = frame;
-                }
-                else
-                {
-                    _frames_array[i][j] = frame;
-                    j++;
-                    i = 0;
-                    img_point.X = 10;
-                    img_point.Y += frame_height;
-                    
-                }
+                g.DrawImage(frame.pic, new Point(xx,10));
+                _frames_array[i] = frame;
+                i++;
+                xx += (frame.pic.Width + 10);
             }
         }
         
@@ -120,7 +84,7 @@ namespace AquaVeil
 
         private Size old_pix;
 
-        private double _image_scale = 0.5;
+        private double _image_scale = 0.1;
         public double image_scale
         {
             get {
@@ -140,10 +104,8 @@ namespace AquaVeil
             {
                 _Map.Add(value);
                 old_pix = new Size(_Map[index].PixelWidth, _Map[index].PixelHeight);
-                _Map[index].PixelHeight = (int)((double)_Map[index].PixelHeight * _image_scale);
-                _Map[index].PixelWidth = (int)((double)_Map[index].PixelWidth * _image_scale);
-                Frame_bmp = new Bitmap(_Map[index].Width * _Map[index].PixelWidth,
-                _Map[index].Height * _Map[index].PixelWidth);
+                Frame_bmp = new Bitmap((int)((double)_Map[index].Width * _Map[index].PixelWidth*image_scale),
+                (int)((double)_Map[index].Height * _Map[index].PixelWidth*image_scale));
                 in_bmp_draw(ref Frame_bmp, _Map[index]);
                 _Map[index].pic = Frame_bmp;
             }
@@ -168,7 +130,7 @@ namespace AquaVeil
                     else
                         b = bb;
 
-                    g.FillRectangle(b,   i * Map.PixelWidth,   j * (Map.PixelWidth), //drink
+                    g.FillRectangle(b,  (int) (i * Map.PixelWidth*image_scale), (int)(j * (Map.PixelWidth) * image_scale), //drink
                         (int)(Map.PixelWidth - 2), (int)(Map.PixelHeight - 2));
                 }
             Map.PixelWidth = old_pix.Width; //воооооооооооооттттт
