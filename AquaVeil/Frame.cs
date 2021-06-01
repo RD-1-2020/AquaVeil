@@ -9,11 +9,12 @@ using AquaVeil;
 
 namespace AquaVeil
 {
+    //Класс для отрисовки кадров
     public class Drawer_Frames {
 
         private Dictionary<int, clMap> Dictionary_Frames = new Dictionary<int, clMap>();
 
-
+        //Массив кадров для доступа по нажатию
         private clMap[] _frames_array;
         
         public clMap[] frames_array {
@@ -32,6 +33,11 @@ namespace AquaVeil
         }
 
         double _scale;
+        /// <summary>
+        /// Конструктор отрисовщика
+        /// </summary>
+        /// <param name="frames">Кадры</param>
+        /// <param name="scale">Масштаб кадров</param>
         public Drawer_Frames(Frames frames, double scale) {
             int i = 0;
             foreach (var element in frames.Map) {
@@ -40,9 +46,9 @@ namespace AquaVeil
             }
             _scale = scale;
             frame_width = (int)(frames.Map[0].Width * frames.Map[0].PixelWidth * _scale + 10);
-            /*frame_width = (int)(frames.Map[0].Width * (frames.Map[0].PixelWidth * scale) - 40 * scale);
-            frame_height = (int)(frames.Map[0].Height * (frames.Map[0].PixelHeight * scale) + 10 * scale);*/
         }
+
+        // Проверка существует ли данный кадр (для отрисовки)
         public bool is_frame(int x) {
             try
             {
@@ -55,6 +61,11 @@ namespace AquaVeil
             
         }
 
+        /// <summary>
+        /// Отрисовка кадров
+        /// </summary>
+        /// <param name="g">Поле</param>
+        /// <param name="width">Длинна поля</param>
         public void Drawing(Graphics g, int width)
         {
             g.Clear(Color.Gray);
@@ -70,11 +81,14 @@ namespace AquaVeil
         }
         
     }
+    //Класс для массива кадров
     public class Frames
     {
         //Создаём лист мапов для инициализации индексатора
         private List <clMap> _Map = new List<clMap>();
+        // Графика кадра
         private Bitmap Frame_bmp;
+
         public List<clMap> Map
         {
             get {
@@ -83,8 +97,9 @@ namespace AquaVeil
         }
 
         private Size old_pix;
-
+        // Масштаб картинки
         private double _image_scale = 0.1;
+
         public double image_scale
         {
             get {
@@ -94,6 +109,8 @@ namespace AquaVeil
                 _image_scale = value;
             }
         }
+
+        // Индексатор по мапам, при добавлении нового для кадра создаётся графика
         public clMap this[int index]
         {
             get
@@ -111,7 +128,8 @@ namespace AquaVeil
             }
         }
 
-        private void in_bmp_draw(ref Bitmap bmp, clMap Map) { //как поправить
+        // Фукнция для превращения кадра в виде массива в битмап
+        private void in_bmp_draw(ref Bitmap bmp, clMap Map) {
 
             Graphics g = Graphics.FromImage(bmp);
 
@@ -129,11 +147,11 @@ namespace AquaVeil
                         b = bf;
                     else
                         b = bb;
-
-                    g.FillRectangle(b,  (int) (i * Map.PixelWidth*image_scale), (int)(j * (Map.PixelWidth) * image_scale), //drink
+                    // TODO: Что-то здесь не то, глянуть
+                    g.FillRectangle(b,  (int) (i * Map.PixelWidth*image_scale), (int)(j * (Map.PixelWidth) * image_scale),
                         (int)(Map.PixelWidth - 2), (int)(Map.PixelHeight - 2));
                 }
-            Map.PixelWidth = old_pix.Width; //воооооооооооооттттт
+            Map.PixelWidth = old_pix.Width;
             Map.PixelHeight = old_pix.Height;
         }
     }
