@@ -41,10 +41,10 @@ namespace AquaVeil
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this._main = new System.Windows.Forms.PictureBox();
-            this.SB_frame = new System.Windows.Forms.VScrollBar();
             this.pb_cadr_list = new System.Windows.Forms.PictureBox();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.fontDialog2 = new System.Windows.Forms.FontDialog();
+            this.SB_frame = new System.Windows.Forms.HScrollBar();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -151,26 +151,27 @@ namespace AquaVeil
             this._main.TabStop = false;
             this._main.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             // 
-            // SB_frame
-            // 
-            this.SB_frame.Dock = System.Windows.Forms.DockStyle.Right;
-            this.SB_frame.Location = new System.Drawing.Point(836, 0);
-            this.SB_frame.Maximum = 1000;
-            this.SB_frame.Name = "SB_frame";
-            this.SB_frame.Size = new System.Drawing.Size(21, 70);
-            this.SB_frame.TabIndex = 1;
-            this.SB_frame.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SB_frame_Scroll);
-            // 
             // pb_cadr_list
             // 
             this.pb_cadr_list.BackColor = System.Drawing.Color.Silver;
-            this.pb_cadr_list.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pb_cadr_list.Dock = System.Windows.Forms.DockStyle.Top;
             this.pb_cadr_list.Location = new System.Drawing.Point(0, 0);
             this.pb_cadr_list.Name = "pb_cadr_list";
             this.pb_cadr_list.Size = new System.Drawing.Size(857, 70);
             this.pb_cadr_list.TabIndex = 0;
             this.pb_cadr_list.TabStop = false;
             this.pb_cadr_list.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_cadr_list_MouseClick);
+            // 
+            // SB_frame
+            // 
+            this.SB_frame.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.SB_frame.LargeChange = 50;
+            this.SB_frame.Location = new System.Drawing.Point(0, 55);
+            this.SB_frame.Maximum = 1000;
+            this.SB_frame.Name = "SB_frame";
+            this.SB_frame.Size = new System.Drawing.Size(857, 15);
+            this.SB_frame.TabIndex = 2;
+            this.SB_frame.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SB_frame_Scroll);
             // 
             // ucCanvas
             // 
@@ -209,8 +210,8 @@ namespace AquaVeil
         private System.Windows.Forms.FontDialog fontDialog2;
         private System.Windows.Forms.PictureBox pb_cadr_list;
         private System.Windows.Forms.ToolStripLabel lb_clear;
-        private System.Windows.Forms.VScrollBar SB_frame;
         public System.Windows.Forms.ToolStripLabel lb_savefr;
         private System.Windows.Forms.PropertyGrid propertyGrid1;
+        private System.Windows.Forms.HScrollBar SB_frame;
     }
 }

@@ -9,20 +9,23 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections;
 using System.Diagnostics;
-
+// TODO: Печатаем
 namespace AquaVeil
 {
     public partial class ucCanvas : UserControl
     {
-
+        //Кадр который редактируем
         public clMap Map;
+        //Все кадры
         public Frames frames = new Frames();
+        //Врменный лист кадров для перерисовки (для полной перерисовки всех кадров)
         public List<clMap> clMapList = new List<clMap>();
 
-
+        //Отступ от для кадра края области
         static private Int32 _distX = 10;
         static private Int32 _distY = 10;
 
+        //Переключатель для редактирования уже существующих кадров (если кадр уже есть то истина иначе ложь)
         bool is_copy = false;
         
         public ucCanvas()
@@ -31,7 +34,7 @@ namespace AquaVeil
             Map = new clMap();
             propertyGrid1.SelectedObject = Map;
         }
-
+        //Отрисовка кадра для редактирования
         public void Drawing()
         {
             if (Map == null)
@@ -56,12 +59,14 @@ namespace AquaVeil
 
         }
 
+
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             _main.CreateGraphics().Clear(_main.BackColor);
             Drawing();
         }
 
+        //Редактирование кадра
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
             Int32 x = e.X;
@@ -76,6 +81,7 @@ namespace AquaVeil
             toolStripStatusLabel1.Text = "X=" + x.ToString() + " Y=" + y.ToString() + " xx = " + xx.ToString() + " yy = " + yy.ToString();
         }
 
+        //Очистка кадра 
         private void lb_clear_Click(object sender, EventArgs e)
         {
             Refresh();
@@ -83,12 +89,15 @@ namespace AquaVeil
             Drawing();
         }
 
+        //Сохранение кадра
         public void lb_savefr_Click(object sender, EventArgs e)
         {
             Refresh();
             Graphics g = pb_cadr_list.CreateGraphics();
                 g.Clear(Color.Silver);
+            //для учёта отступа
             g.TranslateTransform(-SB_frame.Value, 0);
+
             if (!is_copy)
             {
                 clMapList.Add(Map);
@@ -96,35 +105,48 @@ namespace AquaVeil
             else {
                 is_copy = false;
             }
+
             frames = new Frames();
+            
             int i = 0;
+            
             foreach (var element in clMapList)
             {
                 frames[i] = element;
                 i++;
             }
+            
             new Drawer_Frames(frames,frames.image_scale).Drawing(g,pb_cadr_list.Width);
+            
             Map = new clMap();
+            
             propertyGrid1.SelectedObject = Map;
-            Debug.WriteLine(clMapList.Count);
+            
+            //Debug.WriteLine(clMapList.Count); для проверки добавления кадров
+            
             Map.CreateCanvas();
+            
             Drawing();
         }
-
+        //Перерисовка сохранённых кадров
         private void redraw_frame_list() {
             if (frames.Map.Count == 0)
                 return;
+           
             Graphics g = pb_cadr_list.CreateGraphics();
             g.TranslateTransform(-SB_frame.Value, 0);
             g.Clear(pb_cadr_list.BackColor);
+            
             new Drawer_Frames(frames, frames.image_scale).Drawing(g, pb_cadr_list.Width);
         }
 
+        //Смещение кадров по иксу
         private void SB_frame_Scroll(object sender, ScrollEventArgs e)
         {
             redraw_frame_list();
         }
 
+        //Выбор кадра на редактирование
         private void pb_cadr_list_MouseClick(object sender, MouseEventArgs e)
 
         {
