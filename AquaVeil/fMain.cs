@@ -12,7 +12,6 @@ namespace AquaVeil
 {
     public partial class fMain : Form
     {
-        public PictureBox pb = new PictureBox();
         public fMain()
         {
             InitializeComponent();

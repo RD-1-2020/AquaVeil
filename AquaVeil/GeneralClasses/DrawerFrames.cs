@@ -73,7 +73,7 @@ namespace AquaVeil.GeneralClasses
         /// </summary>
         /// <param name="g">Поле</param>
         /// <param name="width">Длинна поля</param>
-        public void Drawing(Graphics g, int width)
+        public void Drawing(Graphics g)
         {
             g.Clear(Color.Gray);
             _frames_array = new clMap[Dictionary_Frames.Count];

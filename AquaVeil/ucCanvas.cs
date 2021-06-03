@@ -118,7 +118,7 @@ namespace AquaVeil
                 i++;
             }
             
-            new Drawer_Frames(frames,frames.image_scale).Drawing(g,pb_cadr_list.Width);
+            new Drawer_Frames(frames,frames.image_scale).Drawing(g);
             
             Map = new clMap();
             
@@ -138,7 +138,7 @@ namespace AquaVeil
             g.TranslateTransform(-SB_frame.Value, 0);
             g.Clear(pb_cadr_list.BackColor);
             
-            new Drawer_Frames(frames, frames.image_scale).Drawing(g, pb_cadr_list.Width);
+            new Drawer_Frames(frames, frames.image_scale).Drawing(g);
         }
 
         //Смещение кадров по иксу
@@ -152,21 +152,29 @@ namespace AquaVeil
 
         {
             if (clMapList.Count == 0)
+            {
                 return;
+            }
+            
             frames = new Frames();
+            
             Graphics g1 = pb_cadr_list.CreateGraphics();
+            
             g1.TranslateTransform(0, -SB_frame.Value);
             g1.Clear(pb_cadr_list.BackColor);
+            
             int i = 0;
+            
             foreach (var element in clMapList)
             {
                 frames[i] = element;
                 i++;
             }
+            
             Graphics g = pb_cadr_list.CreateGraphics();
             g.TranslateTransform(0, -SB_frame.Value);
             var drawer = (new Drawer_Frames(frames, frames.image_scale));
-            drawer.Drawing(g,pb_cadr_list.Width);
+            drawer.Drawing(g);
             int X = e.X + SB_frame.Value;
             int xx = (X)/ drawer.frame_wh;
             toolStripStatusLabel1.Text = "X=" + X.ToString()  + " xx = " + xx.ToString();
