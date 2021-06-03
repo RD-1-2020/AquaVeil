@@ -41,10 +41,11 @@ namespace AquaVeil
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this._main = new System.Windows.Forms.PictureBox();
+            this.SB_frame = new System.Windows.Forms.HScrollBar();
             this.pb_cadr_list = new System.Windows.Forms.PictureBox();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.fontDialog2 = new System.Windows.Forms.FontDialog();
-            this.SB_frame = new System.Windows.Forms.HScrollBar();
+            this.FileSave = new System.Windows.Forms.ToolStripLabel();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -80,7 +81,8 @@ namespace AquaVeil
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
             this.lb_clear,
-            this.lb_savefr});
+            this.lb_savefr,
+            this.FileSave});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(857, 25);
@@ -151,6 +153,17 @@ namespace AquaVeil
             this._main.TabStop = false;
             this._main.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
             // 
+            // SB_frame
+            // 
+            this.SB_frame.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.SB_frame.LargeChange = 50;
+            this.SB_frame.Location = new System.Drawing.Point(0, 55);
+            this.SB_frame.Maximum = 1000;
+            this.SB_frame.Name = "SB_frame";
+            this.SB_frame.Size = new System.Drawing.Size(857, 15);
+            this.SB_frame.TabIndex = 2;
+            this.SB_frame.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SB_frame_Scroll);
+            // 
             // pb_cadr_list
             // 
             this.pb_cadr_list.BackColor = System.Drawing.Color.Silver;
@@ -162,16 +175,12 @@ namespace AquaVeil
             this.pb_cadr_list.TabStop = false;
             this.pb_cadr_list.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_cadr_list_MouseClick);
             // 
-            // SB_frame
+            // FileSave
             // 
-            this.SB_frame.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.SB_frame.LargeChange = 50;
-            this.SB_frame.Location = new System.Drawing.Point(0, 55);
-            this.SB_frame.Maximum = 1000;
-            this.SB_frame.Name = "SB_frame";
-            this.SB_frame.Size = new System.Drawing.Size(857, 15);
-            this.SB_frame.TabIndex = 2;
-            this.SB_frame.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SB_frame_Scroll);
+            this.FileSave.Name = "FileSave";
+            this.FileSave.Size = new System.Drawing.Size(103, 22);
+            this.FileSave.Text = "Сохранить кадры";
+            this.FileSave.Click += new System.EventHandler(this.toolStripLabel1_Click);
             // 
             // ucCanvas
             // 
@@ -213,5 +222,6 @@ namespace AquaVeil
         public System.Windows.Forms.ToolStripLabel lb_savefr;
         private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.HScrollBar SB_frame;
+        private System.Windows.Forms.ToolStripLabel FileSave;
     }
 }

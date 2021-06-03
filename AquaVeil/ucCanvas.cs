@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections;
 using System.Diagnostics;
+using AquaVeil.GeneralClasses;
 // TODO: Печатаем
 namespace AquaVeil
 {
@@ -92,6 +93,7 @@ namespace AquaVeil
         //Сохранение кадра
         public void lb_savefr_Click(object sender, EventArgs e)
         {
+            
             Refresh();
             Graphics g = pb_cadr_list.CreateGraphics();
                 g.Clear(Color.Silver);
@@ -121,9 +123,8 @@ namespace AquaVeil
             Map = new clMap();
             
             propertyGrid1.SelectedObject = Map;
-            
+
             //Debug.WriteLine(clMapList.Count); для проверки добавления кадров
-            
             Map.CreateCanvas();
             
             Drawing();
@@ -177,6 +178,17 @@ namespace AquaVeil
             }
             propertyGrid1.SelectedObject = Map;
             redraw_frame_list();
+        }
+
+        private void toolStripLabel1_Click(object sender, EventArgs e)
+        {
+            if (clMapList.Count() == 0)
+            {
+                MessageBox.Show("Нет Кадров для сохранения ", "Ошибка!");
+                return;
+            }
+            PrintToFile printToFile = new PrintToFile(clMapList);
+            printToFile.PrintAll();
         }
     }
 }
