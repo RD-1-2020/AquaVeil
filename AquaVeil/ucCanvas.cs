@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using System.Collections;
 using System.Diagnostics;
 using AquaVeil.GeneralClasses;
-// TODO: Печатаем
 namespace AquaVeil
 {
     public partial class ucCanvas : UserControl
