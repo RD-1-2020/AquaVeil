@@ -150,6 +150,34 @@ namespace AquaVeilV1
         }
 
         /// <summary>
+        /// Функция для создания картинки по MapCanvas
+        /// </summary>
+        /// <returns>Картинка</returns>
+        public Bitmap getBitmap() {
+            Bitmap frameBitmap = new Bitmap(_Width * _PixelWidth,_Height * _PixelHeight);
+
+            Graphics g = Graphics.FromImage(frameBitmap);
+
+            SolidBrush bb = new SolidBrush(ColorPenBackground);
+            SolidBrush bf = new SolidBrush(ColorPenForeground);
+            SolidBrush b;
+
+            Pen pb = new Pen(bb);
+            Pen pf = new Pen(bf);
+
+            for (int i = 0; i < Width; i++)
+                for (int j = 0; j < Height; j++)
+                {
+                    if (MapCanvas[i][j] == 0)
+                        b = bf;
+                    else
+                        b = bb;
+                    g.FillRectangle(b, i * PixelWidth, j * PixelWidth, PixelWidth, PixelHeight);
+                }
+            return frameBitmap;
+        }
+
+        /// <summary>
         /// Метод обновления размеров (Не сделан)
         /// </summary>
         public void refreshSize() {
