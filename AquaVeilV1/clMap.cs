@@ -20,6 +20,11 @@ namespace AquaVeilV1
         private Color _ColorPenForeground = Color.Red;
         private Color _ColorPenBackground = Color.White;
 
+        private Color[] _ColumnColor;
+
+        private Int32 _WidthMargin = 2;
+        private Int32 _HeightMargin = 0;
+
         private Int32[][] _MapCanvas;
 
         /// <summary>
@@ -106,6 +111,29 @@ namespace AquaVeilV1
             get { return _MapCanvas; }
         }
 
+        /// <summary>
+        /// Цвет каждого столбца
+        /// </summary>
+        public Color[] ColumnColor { 
+            get => _ColumnColor; 
+            set => _ColumnColor = value; 
+        }
+
+        /// <summary>
+        /// Растояние между пикселями в длинну
+        /// </summary>
+        public int WidthMargin { 
+            get => _WidthMargin; 
+            set => _WidthMargin = value;
+        }
+
+        /// <summary>
+        /// Растояние между пикселями в ширину
+        /// </summary>
+        public int HeightMargin {
+            get => _HeightMargin; 
+            set => _HeightMargin = value; 
+        }
 
         public clMap()
         {
@@ -117,16 +145,23 @@ namespace AquaVeilV1
             for (int i = 0; i < _Width; i++)
                 for (int j = 0; j < _Height; j++)
                     _MapCanvas[i][j] = 0;
+
+            initColor();
         }
 
-
+        public void initColor() {
+            ColumnColor = new Color[_Width];
+            for (int i = 0; i < _Width; i++)
+            {
+                ColumnColor[i] = this.ColorPenForeground;
+            }
+        }
 
         public void CreateCanvas()
         {
             _MapCanvas = new Int32[_Width][];
             for (int i = 0; i < _Width; i++)
                 _MapCanvas[i] = new Int32[_Height];
-
 
             for (int i = 0; i < _Width; i++)
                 for (int j = 0; j < _Height; j++)
@@ -158,22 +193,33 @@ namespace AquaVeilV1
 
             Graphics g = Graphics.FromImage(frameBitmap);
 
-            SolidBrush bb = new SolidBrush(ColorPenBackground);
-            SolidBrush bf = new SolidBrush(ColorPenForeground);
+            SolidBrush bf = new SolidBrush(ColorPenBackground);
             SolidBrush b;
-
-            Pen pb = new Pen(bb);
-            Pen pf = new Pen(bf);
 
             for (int i = 0; i < Width; i++)
                 for (int j = 0; j < Height; j++)
                 {
                     if (MapCanvas[i][j] == 0)
-                        b = bf;
+                        b = new SolidBrush(ColumnColor[i]);
                     else
-                        b = bb;
-                    g.FillRectangle(b, i * PixelWidth, j * PixelWidth, PixelWidth, PixelHeight);
+                        b = bf;
+                    g.FillRectangle(b, i * PixelWidth, j * PixelHeight, PixelWidth - WidthMargin, PixelHeight - HeightMargin);
                 }
+            return frameBitmap;
+        }
+
+        public Bitmap getColorsBitmap() {
+            Bitmap frameBitmap = new Bitmap(_Width * _PixelWidth, _Height * _PixelHeight);
+
+            Graphics g = Graphics.FromImage(frameBitmap);
+
+            SolidBrush b;
+
+            for (int i = 0; i < Width; i++)
+            {
+                b = new SolidBrush(ColumnColor[i]);
+                g.FillRectangle(b, i * PixelWidth, 0, PixelWidth - WidthMargin, PixelHeight - HeightMargin);
+            }
             return frameBitmap;
         }
 
@@ -186,6 +232,13 @@ namespace AquaVeilV1
 
             Int32 _PixelHeight = Settings.HeightPix;
             Int32 _PixelWidth = Settings.WidthPix;
+        }
+
+        public bool changeColumnColor(Color newColor,int colorIndex) {
+            if (colorIndex >= Width || colorIndex < 0)
+                return false;
+            ColumnColor[colorIndex] = newColor;
+            return true;
         }
     }
 }

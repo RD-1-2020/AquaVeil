@@ -29,7 +29,7 @@ namespace AquaVeilV1
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frMain));
             this.ssBottomMenu = new System.Windows.Forms.StatusStrip();
             this.bmLBItemSettingsInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -53,6 +53,8 @@ namespace AquaVeilV1
             this.tslColorPen = new System.Windows.Forms.ToolStripLabel();
             this.tslColorExPen = new System.Windows.Forms.ToolStripLabel();
             this.cdColorChange = new System.Windows.Forms.ColorDialog();
+            this.tsmSaveTo = new System.Windows.Forms.ToolStripMenuItem();
+            this.fbdExplorer = new System.Windows.Forms.FolderBrowserDialog();
             this.ssBottomMenu.SuspendLayout();
             this.msMainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).BeginInit();
@@ -97,6 +99,8 @@ namespace AquaVeilV1
             // 
             // mmItemFile
             // 
+            this.mmItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmSaveTo});
             this.mmItemFile.Name = "mmItemFile";
             this.mmItemFile.Size = new System.Drawing.Size(48, 20);
             this.mmItemFile.Text = "Файл";
@@ -119,14 +123,14 @@ namespace AquaVeilV1
             // tsmSettingsRedact
             // 
             this.tsmSettingsRedact.Name = "tsmSettingsRedact";
-            this.tsmSettingsRedact.Size = new System.Drawing.Size(180, 22);
+            this.tsmSettingsRedact.Size = new System.Drawing.Size(128, 22);
             this.tsmSettingsRedact.Text = "Изменить";
             this.tsmSettingsRedact.Click += new System.EventHandler(this.tsmSettingsRedact_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(125, 6);
             // 
             // scMain
             // 
@@ -141,7 +145,7 @@ namespace AquaVeilV1
             // 
             this.scMain.Panel1.Controls.Add(this.scRedactor);
             this.scMain.Size = new System.Drawing.Size(1056, 595);
-            this.scMain.SplitterDistance = 413;
+            this.scMain.SplitterDistance = 416;
             this.scMain.SplitterWidth = 1;
             this.scMain.TabIndex = 2;
             // 
@@ -163,7 +167,7 @@ namespace AquaVeilV1
             this.scRedactor.Panel2.Controls.Add(this.pbFrameRedact);
             this.scRedactor.Panel2.Controls.Add(this.label1);
             this.scRedactor.Panel2.Controls.Add(this.tsRedactFrameTools);
-            this.scRedactor.Size = new System.Drawing.Size(1056, 413);
+            this.scRedactor.Size = new System.Drawing.Size(1056, 416);
             this.scRedactor.SplitterDistance = 352;
             this.scRedactor.SplitterWidth = 1;
             this.scRedactor.TabIndex = 0;
@@ -173,10 +177,10 @@ namespace AquaVeilV1
             this.lvFrameList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvFrameList.HideSelection = false;
             this.lvFrameList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem1});
             this.lvFrameList.Location = new System.Drawing.Point(0, 53);
             this.lvFrameList.Name = "lvFrameList";
-            this.lvFrameList.Size = new System.Drawing.Size(350, 333);
+            this.lvFrameList.Size = new System.Drawing.Size(350, 336);
             this.lvFrameList.TabIndex = 3;
             this.lvFrameList.UseCompatibleStateImageBehavior = false;
             this.lvFrameList.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvFrameList_ItemSelectionChanged);
@@ -187,7 +191,7 @@ namespace AquaVeilV1
             this.flMenuTool.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flMenuTool.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsBTNewFrame});
-            this.flMenuTool.Location = new System.Drawing.Point(0, 386);
+            this.flMenuTool.Location = new System.Drawing.Point(0, 389);
             this.flMenuTool.Name = "flMenuTool";
             this.flMenuTool.Size = new System.Drawing.Size(350, 25);
             this.flMenuTool.TabIndex = 2;
@@ -221,7 +225,7 @@ namespace AquaVeilV1
             this.pbFrameRedact.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbFrameRedact.Location = new System.Drawing.Point(0, 53);
             this.pbFrameRedact.Name = "pbFrameRedact";
-            this.pbFrameRedact.Size = new System.Drawing.Size(701, 333);
+            this.pbFrameRedact.Size = new System.Drawing.Size(701, 336);
             this.pbFrameRedact.TabIndex = 3;
             this.pbFrameRedact.TabStop = false;
             this.pbFrameRedact.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbFrameRedact_MouseClick);
@@ -244,10 +248,10 @@ namespace AquaVeilV1
             this.tsRedactFrameTools.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tsRedactFrameTools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsLBColorFrame,
-            this.tslColorExBack,
+            this.tslColorExPen,
             this.tslColorPen,
-            this.tslColorExPen});
-            this.tsRedactFrameTools.Location = new System.Drawing.Point(0, 386);
+            this.tslColorExBack});
+            this.tsRedactFrameTools.Location = new System.Drawing.Point(0, 389);
             this.tsRedactFrameTools.Name = "tsRedactFrameTools";
             this.tsRedactFrameTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.tsRedactFrameTools.Size = new System.Drawing.Size(701, 25);
@@ -289,6 +293,13 @@ namespace AquaVeilV1
             this.tslColorExPen.Size = new System.Drawing.Size(22, 22);
             this.tslColorExPen.Text = "     ";
             this.tslColorExPen.Click += new System.EventHandler(this.tslColorExPen_Click);
+            // 
+            // tsmSaveTo
+            // 
+            this.tsmSaveTo.Name = "tsmSaveTo";
+            this.tsmSaveTo.Size = new System.Drawing.Size(180, 22);
+            this.tsmSaveTo.Text = "Сохранить...";
+            this.tsmSaveTo.Click += new System.EventHandler(this.tsmSaveTo_Click);
             // 
             // frMain
             // 
@@ -348,6 +359,8 @@ namespace AquaVeilV1
         private System.Windows.Forms.ColorDialog cdColorChange;
         private System.Windows.Forms.ToolStripButton tsBTNewFrame;
         private System.Windows.Forms.ListView lvFrameList;
+        private System.Windows.Forms.ToolStripMenuItem tsmSaveTo;
+        private System.Windows.Forms.FolderBrowserDialog fbdExplorer;
     }
 }
 
