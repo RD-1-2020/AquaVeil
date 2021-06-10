@@ -54,15 +54,15 @@ namespace AquaVeilV1
 
             
             Graphics g = pbFrameRedact.CreateGraphics();
-            g.DrawImage(Map.getBitmap(), posX, posY);
-            g.DrawImage(Map.getColorsBitmap(), posCPX, posCPY);
+            g.DrawImage(Map.getBitmap(), posX, posY); // Отображение самого кадра
+            g.DrawImage(Map.getColorsBitmap(), posCPX, posCPY); // Отображение цветовой панели
 
             lvFrameListRefreshList(); // Немного ресурсозатратно
         }
 
         private void refreshExColor() {
-            this.tslColorExBack.BackColor = Map.ColorPenBackground;
-            this.tslColorExPen.BackColor = Map.ColorPenForeground;
+            tslColorExBack.BackColor = Map.ColorPenBackground;
+            tslColorExPen.BackColor = Map.ColorPenForeground;
         }
 
         private void pbFrameRedact_MouseClick(object sender, MouseEventArgs e)
@@ -121,9 +121,9 @@ namespace AquaVeilV1
         private void lvFrameListInit() {
             lvFrameList.LargeImageList = new ImageList();
 
+            // Расчёт размеров кадра в listView
             int lvWidth = (int)Math.Sqrt(Settings.Width * lvImageSize / Settings.Height);
-            int lvHeight = (int)Math.Sqrt((Settings.Height * lvImageSize / Settings.Width) <= lvImageSize/10 ? 
-                (Settings.Height * lvImageSize / Settings.Width) *5 :((Settings.Height * lvImageSize / Settings.Width)));
+            int lvHeight = (int)Math.Sqrt((Settings.Height * lvImageSize / Settings.Width));
 
             lvFrameList.LargeImageList.ImageSize = new Size(lvWidth,lvHeight);
         }
@@ -177,85 +177,16 @@ namespace AquaVeilV1
             Drawing();
         }
 
-        /// <summary>
-        /// Вызывает новую форму для изменения текущих настроек проекта
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmSettingsRedact_Click(object sender, EventArgs e) // Сделать вызов формы под редактрирование
-        {
-            if (Maps != null) // Временно потом вызывать метод refreshSize() для каждого элемента Maps
-                return;
-        }
-
-        private void saveFramesToFile(string Path) {
-            string fileText = "";
-            int num = 1;
-            foreach (clMap map in Maps)
-            {
-                string fileName = @"Frame" + num +".txt";
-                fileText += Convert.ToString(Maps.Count, 16) + "\n";
-                fileText += Convert.ToString(Settings.Width, 16) + "\n";
-                fileText += Convert.ToString(Settings.Height, 16) + "\n";
-                
-
-                for (int i = 0; i < map.MapCanvas[i].Length; i++)
-                {
-                    for (int j = 0; j < map.MapCanvas.Length; j++)
-                    {
-                        fileText += map.MapCanvas[j][i];
-                    }
-                    fileText += "\n";
-                }
-
-
-                using (StreamWriter FileFrame = new StreamWriter(Path+@"\" + fileName, false, System.Text.Encoding.Default))
-                {
-                    FileFrame.Write(fileText);
-                }
-
-
-                fileText = "";
-                num++;
-            }
-        }
-
-        private void saveColorToFile(string Path)
-        {
-            string fileText = "";
-            int num = 1;
-            foreach (clMap map in Maps)
-            {
-                string fileName = "Frame" + num +"Color.txt";
-                for (int i = 0; i < map.Width; i++)
-                {
-                    
-                    fileText += Convert.ToString(map.ColumnColor[i].R,16) + (map.ColumnColor[i].R == 0 ? "0" : "");
-                    fileText += Convert.ToString(map.ColumnColor[i].G, 16) + (map.ColumnColor[i].G == 0 ? "0" : "");
-                    fileText += Convert.ToString(map.ColumnColor[i].B, 16) + (map.ColumnColor[i].B == 0 ? "0" : "");
-                    fileText += "\n";
-                }
-
-                using (StreamWriter FileFrame = new StreamWriter(Path + @"\" + fileName, false, System.Text.Encoding.Default))
-                {
-                    FileFrame.Write(fileText);
-                }
-                fileText = "";
-                num++;
-            }
-        }
-
-
-
         private void tsmSaveTo_Click(object sender, EventArgs e)
         {
             string Path;
+            int num = 1;
             if (fbdExplorer.ShowDialog() == DialogResult.OK) {
                 Path = fbdExplorer.SelectedPath;
-
-                saveFramesToFile(Path);
-
-                saveColorToFile(Path);
+                foreach (clMap map in Maps) {
+                    map.printToFiles(num,Path);
+                    num++;
+                }
             }
         }
     }

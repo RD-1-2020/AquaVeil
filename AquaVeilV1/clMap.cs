@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -208,6 +209,18 @@ namespace AquaVeilV1
             return frameBitmap;
         }
 
+        public bool changeColumnColor(Color newColor, int colorIndex)
+        {
+            if (colorIndex >= Width || colorIndex < 0)
+                return false;
+            ColumnColor[colorIndex] = newColor;
+            return true;
+        }
+
+        /// <summary>
+        /// Цветовая панель по _ColumnColor
+        /// </summary>
+        /// <returns>Каринка для работы с цветовой панелью</returns>
         public Bitmap getColorsBitmap() {
             Bitmap frameBitmap = new Bitmap(_Width * _PixelWidth, _Height * _PixelHeight);
 
@@ -224,21 +237,53 @@ namespace AquaVeilV1
         }
 
         /// <summary>
-        /// Метод обновления размеров (Не сделан)
+        /// Функция превращения clMap в файлы
+        /// 1 файл - Frame{fileNum}.txt Хранит настройки кадра и сам кадр в виде 
+        /// двумерного массива
+        /// 2 файл - Frame{fileNum}Color.txt Хранит цвета кадра по столбцам
         /// </summary>
-        public void refreshSize() {
-            Int32 _Height = Settings.Height;
-            Int32 _Width = Settings.Width;
+        /// <param name="fileNum">Часть имени файла</param>
+        /// <param name="Path">Путь где сохранять файл</param>
+        public void printToFiles(int fileNum,string Path) {
+            // 1 файл - Frame{fileNum}.txt
+            string fileText = "";
+            string fileName = @"Frame" + fileNum + ".txt";
 
-            Int32 _PixelHeight = Settings.HeightPix;
-            Int32 _PixelWidth = Settings.WidthPix;
-        }
+            fileText += Convert.ToString(Settings.Width, 16) + "\n";
+            fileText += Convert.ToString(Settings.Height, 16) + "\n";
 
-        public bool changeColumnColor(Color newColor,int colorIndex) {
-            if (colorIndex >= Width || colorIndex < 0)
-                return false;
-            ColumnColor[colorIndex] = newColor;
-            return true;
+
+            for (int i = 0; i <MapCanvas[i].Length; i++)
+            {
+                for (int j = 0; j < MapCanvas.Length; j++)
+                {
+                    fileText += MapCanvas[j][i];
+                }
+                fileText += "\n";
+            }
+
+            using (StreamWriter FileFrame = new StreamWriter(Path + @"\" + fileName, false, System.Text.Encoding.Default))
+            {
+                FileFrame.Write(fileText);
+                fileText = "";
+            }
+
+            // 2 файл - Frame{fileNum}Color.txt 
+            fileName = "Frame" + fileNum + "Color.txt";
+
+            for (int i = 0; i < Width; i++)
+            {
+
+                fileText += Convert.ToString(ColumnColor[i].R, 16) + (ColumnColor[i].R == 0 ? "0" : "");
+                fileText += Convert.ToString(ColumnColor[i].G, 16) + (ColumnColor[i].G == 0 ? "0" : "");
+                fileText += Convert.ToString(ColumnColor[i].B, 16) + (ColumnColor[i].B == 0 ? "0" : "");
+                fileText += "\n";
+            }
+
+            using (StreamWriter FileFrame = new StreamWriter(Path + @"\" + fileName, false, System.Text.Encoding.Default))
+            {
+                FileFrame.Write(fileText);
+            }
         }
     }
 }
