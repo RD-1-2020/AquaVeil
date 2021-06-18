@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,14 +24,9 @@ namespace AquaVeilV1
         LinkedList<clMap> Maps; // Возможно следует пользоваться сразу листом listView!
 
         /// <summary>
-        /// Ширина кадра в lvFrameList
+        /// Размер кадров отображаемых в listView
         /// </summary>
-        Int32 _flFrameWidth = 60;
-
-        /// <summary>
-        /// Высота кадра в lvFrameList
-        /// </summary>
-        Int32 _flFrameHeight = 40;
+        Int32 lvImageSize = 2400;
 
         /// <summary>
         /// Положение редактируемого кадра
@@ -38,7 +36,17 @@ namespace AquaVeilV1
         /// <summary>
         /// Положение редактируемого кадра
         /// </summary>
-        Int32 posY = 20;
+        Int32 posY = 40;
+
+        /// <summary>
+        /// Положение панели цветов
+        /// </summary>
+        Int32 posCPX = 20;
+
+        /// <summary>
+        /// Положение панели цветов
+        /// </summary>
+        Int32 posCPY = 10;
 
         private void Drawing() {
             if (Map == null)
@@ -46,25 +54,39 @@ namespace AquaVeilV1
 
             
             Graphics g = pbFrameRedact.CreateGraphics();
-            g.DrawImage(Map.getBitmap(), posX, posY);
-            
+            g.DrawImage(Map.getBitmap(), posX, posY); // Отображение самого кадра
+            g.DrawImage(Map.getColorsBitmap(), posCPX, posCPY); // Отображение цветовой панели
+
             lvFrameListRefreshList(); // Немного ресурсозатратно
         }
 
         private void refreshExColor() {
-            this.tslColorExBack.BackColor = Map.ColorPenForeground;
-            this.tslColorExPen.BackColor = Map.ColorPenBackground;
+            tslColorExBack.BackColor = Map.ColorPenBackground;
+            tslColorExPen.BackColor = Map.ColorPenForeground;
         }
 
         private void pbFrameRedact_MouseClick(object sender, MouseEventArgs e)
         {
+            if (Map == null)
+                return;
+
             Int32 x = e.X;
             Int32 y = e.Y;
 
             Int32 xx = (x - posX) / Map.PixelWidth;
             Int32 yy = (y - posY) / Map.PixelHeight;
 
-            Map.InvertPixel(xx, yy);
+            if (Map.InvertPixel(xx, yy)) {
+                Drawing();
+                return;
+            }
+
+            if (xx > Map.Width)
+                return;
+            cdColorChange.ShowDialog();
+
+            Map.changeColumnColor(cdColorChange.Color,xx);
+
             Drawing();
         }
 
@@ -75,7 +97,9 @@ namespace AquaVeilV1
 
             cdColorChange.ShowDialog();
 
-            Map.ColorPenBackground = cdColorChange.Color;
+            Map.ColorPenForeground = cdColorChange.Color;
+
+            Map.initColor();
 
             refreshExColor();
             Drawing();
@@ -88,7 +112,7 @@ namespace AquaVeilV1
 
             cdColorChange.ShowDialog();
 
-            Map.ColorPenForeground = cdColorChange.Color;
+            Map.ColorPenBackground = cdColorChange.Color;
 
             refreshExColor();
             Drawing();
@@ -96,7 +120,12 @@ namespace AquaVeilV1
 
         private void lvFrameListInit() {
             lvFrameList.LargeImageList = new ImageList();
-            lvFrameList.LargeImageList.ImageSize = new Size(_flFrameWidth, _flFrameHeight);
+
+            // Расчёт размеров кадра в listView
+            int lvWidth = (int)Math.Sqrt(Settings.Width * lvImageSize / Settings.Height);
+            int lvHeight = (int)Math.Sqrt((Settings.Height * lvImageSize / Settings.Width));
+
+            lvFrameList.LargeImageList.ImageSize = new Size(lvWidth,lvHeight);
         }
 
         private void lvFrameListAddNewElement(clMap map, int index) {
@@ -120,9 +149,11 @@ namespace AquaVeilV1
         {
             if (Maps == null) {
                 Maps = new LinkedList<clMap>();
+                new fSettingsRedact().ShowDialog(); 
             }
 
             Map = new clMap();
+            Map.CreateCanvas();
             Maps.AddLast(Map);
             lvFrameListRefreshList();
 
@@ -146,15 +177,17 @@ namespace AquaVeilV1
             Drawing();
         }
 
-        /// <summary>
-        /// Вызывает новую форму для изменения текущих настроек проекта
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void tsmSettingsRedact_Click(object sender, EventArgs e) // Сделать вызов формы под редактрирование
+        private void tsmSaveTo_Click(object sender, EventArgs e)
         {
-            if (Maps != null) // Временно потом вызывать метод refreshSize() для каждого элемента Maps
-                return;
+            string Path;
+            int num = 1;
+            if (fbdExplorer.ShowDialog() == DialogResult.OK) {
+                Path = fbdExplorer.SelectedPath;
+                foreach (clMap map in Maps) {
+                    map.printToFiles(num,Path);
+                    num++;
+                }
+            }
         }
     }
 }
