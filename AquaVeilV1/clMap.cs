@@ -23,7 +23,7 @@ namespace AquaVeilV1
 
         private Color[] _ColumnColor;
 
-        private Int32 _WidthMargin = 2;
+        private Int32 _WidthMargin = 0;
         private Int32 _HeightMargin = 0;
 
         private Int32[][] _MapCanvas;
@@ -236,6 +236,53 @@ namespace AquaVeilV1
             return frameBitmap;
         }
 
+        private int[][] GetByteView()
+        {
+            int[][] ByteFrame = new int[MapCanvas[0].Length][];
+
+            for (int i = 0; i < MapCanvas[0].Length; i++)
+            {
+                ByteFrame[i] = new int[MapCanvas.Length % 8 == 0
+                    ? MapCanvas.Length / 8
+                    : MapCanvas.Length / 8 + MapCanvas.Length % 8];
+            }
+
+            string[] strings = new string[MapCanvas[0].Length];
+            string oneValue="";
+
+
+            for (int i = 0; i < MapCanvas[0].Length; i++)
+            {
+                for (int j = 0; j < MapCanvas.Length; j++)
+                {
+                    strings[i] += MapCanvas[j][i];
+                }
+            }
+
+            for (int i = 0; i < strings.Length; i++)
+            {
+                for (int j = 0,o = 0; j < strings[0].Length; j+=8,o++)
+                {
+                    for (int k = 0; k < 8; k++)
+                    {
+                        try
+                        {
+                            oneValue += strings[i][j + k];
+                        }
+                        catch (Exception)
+                        {
+                            oneValue += 0.ToString();
+                        }
+
+                        ByteFrame[i][o] = Convert.ToInt32(oneValue, 2);
+                    }
+                    oneValue = "";
+                }
+            }
+
+            return ByteFrame;
+        }
+
         /// <summary>
         /// Функция превращения clMap в файлы
         /// 1 файл - Frame{fileNum}.txt Хранит настройки кадра и сам кадр в виде 
@@ -244,34 +291,43 @@ namespace AquaVeilV1
         /// </summary>
         /// <param name="fileNum">Часть имени файла</param>
         /// <param name="Path">Путь где сохранять файл</param>
-        public void printToFiles(int fileNum,string Path) {
+        public void printToFiles(int fileNum, string Path)
+        {
             // 1 файл - Frame{fileNum}.txt
             string fileText = "";
-            string fileName = @"Frame" + fileNum + ".txt";
+            string fileName = $@"Frame{fileNum}.bin";
 
             fileText += Convert.ToString(Settings.Width, 16) + "\n";
             fileText += Convert.ToString(Settings.Height, 16) + "\n";
 
+            int[][] byteViewMapCanvas = GetByteView();
 
-            for (int i = 0; i <MapCanvas[i].Length; i++)
+            for (int i = 0; i < byteViewMapCanvas.Length; i++)
             {
-                for (int j = 0; j < MapCanvas.Length; j++)
+                for (int j = 0; j < byteViewMapCanvas[0].Length; j++)
                 {
-                    fileText += MapCanvas[j][i];
+                    fileText += byteViewMapCanvas[i][j];
                 }
+
                 fileText += "\n";
             }
 
-            using (StreamWriter FileFrame = new StreamWriter(Path + @"\" + fileName, false, System.Text.Encoding.Default))
+
+            using (FileStream fs = new FileStream($@"{Path}\{fileName}", FileMode.OpenOrCreate))
             {
-                FileFrame.Write(fileText);
-                fileText = "";
+                using (BinaryWriter fileFrame = new BinaryWriter(fs, Encoding.Default))
+                {
+                    fileFrame.Write(fileText);
+                    fileText = "";
+                }
             }
 
-            // 2 файл - Frame{fileNum}Color.txt 
-            fileName = "Frame" + fileNum + "Color.txt";
 
-            for (int i = 0; i < Width; i++)
+
+            // 2 файл - Frame{fileNum}Color.txt 
+            fileName = $"Frame{fileNum}Color.bin";
+
+        for (int i = 0; i < Width; i++)
             {
 
                 fileText += Convert.ToString(ColumnColor[i].R, 16) + (ColumnColor[i].R == 0 ? "0" : "");
@@ -280,9 +336,12 @@ namespace AquaVeilV1
                 fileText += "\n";
             }
 
-            using (StreamWriter FileFrame = new StreamWriter(Path + @"\" + fileName, false, System.Text.Encoding.Default))
+            using (FileStream fs = new FileStream($@"{Path}\{fileName}", FileMode.OpenOrCreate))
             {
-                FileFrame.Write(fileText);
+                using (BinaryWriter fileFrame = new BinaryWriter(fs, Encoding.Default))
+                {
+                    fileFrame.Write(fileText);
+                }
             }
         }
     }

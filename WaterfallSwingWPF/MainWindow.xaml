@@ -27,8 +27,8 @@
 
                 </ListView>
             </Grid>
-            <Grid Margin="260,0,0,0" x:Name="ImageGrid">
-                <Image Stretch="Fill" Margin="0,0,0,0" x:Name="MainCanvas" MouseDown="MainCanvas_OnMouseDown">
+            <Grid Margin="260,0,0,0" x:Name="ImageGrid" MouseDown="ImageGrid_MouseDown">
+                <Image Stretch="None" Margin="0,0,0,0" x:Name="MainCanvas" Source="/2021-03-07 (3).png">
                     <Image.ContextMenu>
                         <ContextMenu/>
                     </Image.ContextMenu>

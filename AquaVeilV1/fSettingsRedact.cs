@@ -24,8 +24,8 @@ namespace AquaVeilV1
                 Settings.Width = Convert.ToInt32(tbWidth.Text);
                 Settings.Height = Convert.ToInt32(tbHeight.Text);
             }
-            catch (Exception) { }
-            this.Close();
+            catch (Exception) { } //TODO: Шо какое тут исключение
+            this.Close(); 
         }
     }
 }

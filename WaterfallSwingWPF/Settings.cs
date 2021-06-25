@@ -9,8 +9,8 @@ namespace AquaVeilV1
 {
     static class Settings
     {
-        static private Int32 _width = 10;
-        static private Int32 _height = 10;
+        static private Int32 _width = 100;
+        static private Int32 _height = 100;
 
         /// <summary>
         /// Ширина кадра

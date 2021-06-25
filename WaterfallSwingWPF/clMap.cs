@@ -208,7 +208,7 @@ namespace AquaVeilV1
                         g.Brush = new SolidColorBrush(ColumnColor[i]);
                     else
                         g.Brush = bf;
-                    g.Geometry = new RectangleGeometry(new Rect(i * PixelWidth, j * PixelHeight,
+                    g.Geometry = new RectangleGeometry(new Rect(i * PixelWidth - 1, j * PixelHeight - 1,
                         PixelWidth - WidthMargin, PixelHeight - HeightMargin));
                     drawingGroup.Children.Add(g);
                 }

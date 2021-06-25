@@ -36,6 +36,8 @@ namespace WaterfallSwingWPF
         public MainWindow()
         {
             InitializeComponent();
+            Map = new clMap();
+            Drawing();
         }
 
         public static BitmapSource ToBitmapSource(DrawingImage source)
@@ -64,7 +66,7 @@ namespace WaterfallSwingWPF
             MainCanvas.Source = ToBitmapSource(frameBitmap);
         }
 
-        private void MainCanvas_OnMouseDown(object sender, MouseButtonEventArgs e)
+        private void ImageGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Map = new clMap();
             double x = e.GetPosition(ImageGrid).X;
