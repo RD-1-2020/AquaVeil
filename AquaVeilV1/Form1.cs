@@ -48,6 +48,8 @@ namespace AquaVeilV1
         /// </summary>
         static Int32 posCPY = 10;
 
+        private Point lastClickedPix = new Point(-1,-1);
+
         private void Drawing() {
             if (Map == null)
                 return;
@@ -64,22 +66,6 @@ namespace AquaVeilV1
         private void refreshExColor() {
             tslColorExBack.BackColor = Map.ColorPenBackground;
             tslColorExPen.BackColor = Map.ColorPenForeground;
-        }
-
-        private void pbFrameRedact_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            Int32 x = e.X;
-            Int32 y = e.Y;
-
-            Int32 xx = (x - posX) / Map.PixelWidth;
-            Int32 yy = (y - posY) / Map.PixelHeight;
-
-            if (Map.InvertPixel(xx, yy)) {
-                Drawing();
-            }
         }
 
         private void tslColorExPen_Click(object sender, EventArgs e)
@@ -114,8 +100,8 @@ namespace AquaVeilV1
             lvFrameList.LargeImageList = new ImageList();
 
             // Расчёт размеров кадра в listView
-            int lvWidth = (int)Math.Sqrt(Settings.Width * lvImageSize / Settings.Height);
-            int lvHeight = (int)Math.Sqrt((Settings.Height * lvImageSize / Settings.Width));
+            int lvWidth = (int)Math.Sqrt(Settings.Frame.Width * lvImageSize / Settings.Frame.Height);
+            int lvHeight = (int)Math.Sqrt((Settings.Frame.Height * lvImageSize / Settings.Frame.Width));
 
             if (lvHeight > 256)
             {
@@ -151,19 +137,19 @@ namespace AquaVeilV1
         {
             Maps = new LinkedList<clMap>();
             new fSettingsRedact().ShowDialog();
-            scColorPanel.SplitterDistance = Settings.HeightPix + posCPY * 2;
-            while (Settings.Width * Settings.WidthPix > scFrame.Panel2.Width - posX)
+            scColorPanel.SplitterDistance = Settings.Frame.HeightPix + posCPY * 2;
+            while (Settings.Frame.Width * Settings.Frame.WidthPix > scFrame.Panel2.Width - posX)
             {
-                Settings.WidthPix--;
-                Settings.HeightPix--;
+                Settings.Frame.WidthPix--;
+                Settings.Frame.HeightPix--;
             }
 
-            if (Settings.Width > 100)
+            if (Settings.Frame.Width > 100)
             {
-                lvImageSize = Settings.Width * Settings.Width + Settings.Height * Settings.Height;
+                lvImageSize = Settings.Frame.Width * Settings.Frame.Width + Settings.Frame.Height * Settings.Frame.Height;
             }
 
-            tssiSettingsLabel.Text = $"Размер кадра: {Settings.Width} x {Settings.Height}";
+            tssiSettingsLabel.Text = $"Размер кадра: {Settings.Frame.Width} x {Settings.Frame.Height}";
         }
 
         private void tsBTNewFrame_Click(object sender, EventArgs e)
@@ -204,14 +190,17 @@ namespace AquaVeilV1
         {
             string Path;
             int num = 1;
-            if (fbdExplorer.ShowDialog() == DialogResult.OK) {
-                Path = fbdExplorer.SelectedPath;
+            if (fbdExplorer.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            Path = fbdExplorer.SelectedPath;
                 foreach (clMap map in Maps) {
-                    map.printToFiles(num,Path);
+                    map.printFramesToFiles(num,Path);
                     num++;
                 }
             }
-        }
 
         private void pbColorPanel_MouseClick(object sender, MouseEventArgs e)
         {
@@ -246,18 +235,18 @@ namespace AquaVeilV1
                 return;
             }
 
-            Settings.WidthPix = 30;
-            Settings.HeightPix = 30;
-            while (Settings.Width * Settings.WidthPix > scFrame.Panel2.Width - posX)
+            Settings.Frame.WidthPix = 30;
+            Settings.Frame.HeightPix = 30;
+            while (Settings.Frame.Width * Settings.Frame.WidthPix > scFrame.Panel2.Width - posX)
             {
-                Settings.WidthPix--;
-                Settings.HeightPix--;
+                Settings.Frame.WidthPix--;
+                Settings.Frame.HeightPix--;
             }
 
             foreach (var VARIABLE in Maps)
             {
-                VARIABLE.PixelWidth = Settings.WidthPix;
-                VARIABLE.PixelHeight = Settings.HeightPix;
+                VARIABLE.PixelWidth = Settings.Frame.WidthPix;
+                VARIABLE.PixelHeight = Settings.Frame.HeightPix;
             }
 
             lvFrameListRefreshList();
@@ -275,6 +264,37 @@ namespace AquaVeilV1
 
             Int32 xx = (x - posX) / Map.PixelWidth;
             Int32 yy = (y - posY) / Map.PixelHeight;
+
+            if (xx == lastClickedPix.X && yy == lastClickedPix.Y)
+            {
+                return;
+            }
+
+            lastClickedPix = new Point(xx, yy);
+
+            if (Map.InvertPixel(xx, yy))
+            {
+                Drawing();
+            }
+        }
+
+        private void pbFrameRedact_MouseClick_1(object sender, MouseEventArgs e)
+        {
+            if (Map == null || e.Button != MouseButtons.Left)
+                return;
+
+            Int32 x = e.X;
+            Int32 y = e.Y;
+
+            Int32 xx = (x - posX) / Map.PixelWidth;
+            Int32 yy = (y - posY) / Map.PixelHeight;
+
+            if (xx == lastClickedPix.X && yy == lastClickedPix.Y)
+            {
+                return;
+            }
+
+            lastClickedPix = new Point(xx, yy);
 
             if (Map.InvertPixel(xx, yy))
             {

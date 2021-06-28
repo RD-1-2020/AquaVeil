@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,11 +13,11 @@ namespace AquaVeilV1
 {
     public class clMap
     {
-        private Int32 _Height = Settings.Height;
-        private Int32 _Width = Settings.Width;
+        private Int32 _Height = Settings.Frame.Height;
+        private Int32 _Width = Settings.Frame.Width;
 
-        private Int32 _PixelHeight = Settings.HeightPix;
-        private Int32 _PixelWidth = Settings.WidthPix;
+        private Int32 _PixelHeight = Settings.Frame.HeightPix;
+        private Int32 _PixelWidth = Settings.Frame.WidthPix;
 
         private Color _ColorPenForeground = Color.Red;
         private Color _ColorPenBackground = Color.White;
@@ -31,9 +32,6 @@ namespace AquaVeilV1
         /// <summary>
         /// Высота поля
         /// </summary>
-        [DisplayName("Высота")]
-        [Category("Поле")]
-        [Description("Высота поля")]
         public Int32 Height
         {
             set { _Height = value; }
@@ -43,9 +41,6 @@ namespace AquaVeilV1
         /// <summary>
         /// Ширина поля
         /// </summary>
-        [DisplayName("Ширина")]
-        [Category("Поле")]
-        [Description("Ширина поля")]
         public Int32 Width
         {
             set { _Width = value; }
@@ -57,9 +52,6 @@ namespace AquaVeilV1
         /// <summary>
         /// Высота пикселя
         /// </summary>
-        [DisplayName("Высота пикселя")]
-        [Category("Пиксель")]
-        [Description("Ширина поля")]
         public Int32 PixelHeight
         {
             set { _PixelHeight = value; }
@@ -70,9 +62,6 @@ namespace AquaVeilV1
         /// <summary>
         /// Ширина пикселя
         /// </summary>
-        [DisplayName("Ширина пикселя")]
-        [Category("Пиксель")]
-        [Description("Ширина поля")]
         public Int32 PixelWidth
         {
             set { _PixelWidth = value; }
@@ -83,9 +72,6 @@ namespace AquaVeilV1
         /// <summary>
         /// Ширина пикселя
         /// </summary>
-        [DisplayName("Цвет пикселя незакрашенного")]
-        [Category("Пиксель")]
-        [Description("Цвет пикселя незакрашенного")]
         public Color ColorPenBackground
         {
             set { _ColorPenBackground = value; }
@@ -96,9 +82,6 @@ namespace AquaVeilV1
         /// <summary>
         /// "Цвет пикселя закрашенного
         /// </summary>
-        [DisplayName("Цвет пикселя закрашенного")]
-        [Category("Пиксель")]
-        [Description("Цвет пикселя закрашенного")]
         public Color ColorPenForeground
         {
             set { _ColorPenForeground = value; }
@@ -242,9 +225,9 @@ namespace AquaVeilV1
 
             for (int i = 0; i < MapCanvas[0].Length; i++)
             {
-                ByteFrame[i] = new int[MapCanvas.Length % 8 == 0
-                    ? MapCanvas.Length / 8
-                    : MapCanvas.Length / 8 + MapCanvas.Length % 8];
+                ByteFrame[i] = new int[MapCanvas.Length % 4 == 0
+                    ? MapCanvas.Length / 4
+                    : MapCanvas.Length / 4 + MapCanvas.Length % 4];
             }
 
             string[] strings = new string[MapCanvas[0].Length];
@@ -261,9 +244,9 @@ namespace AquaVeilV1
 
             for (int i = 0; i < strings.Length; i++)
             {
-                for (int j = 0,o = 0; j < strings[0].Length; j+=8,o++)
+                for (int j = 0,o = 0; j < strings[0].Length; j+=4,o++)
                 {
-                    for (int k = 0; k < 8; k++)
+                    for (int k = 0; k < 4; k++)
                     {
                         try
                         {
@@ -273,9 +256,8 @@ namespace AquaVeilV1
                         {
                             oneValue += 0.ToString();
                         }
-
-                        ByteFrame[i][o] = Convert.ToInt32(oneValue, 2);
                     }
+                    ByteFrame[i][o] = Convert.ToInt32(oneValue, 2);
                     oneValue = "";
                 }
             }
@@ -291,14 +273,22 @@ namespace AquaVeilV1
         /// </summary>
         /// <param name="fileNum">Часть имени файла</param>
         /// <param name="Path">Путь где сохранять файл</param>
-        public void printToFiles(int fileNum, string Path)
+        public void printFramesToFiles(int fileNum, string Path)
         {
             // 1 файл - Frame{fileNum}.txt
-            string fileText = "";
-            string fileName = $@"Frame{fileNum}.bin";
+            PrintFrames(fileNum, Path);
 
-            fileText += Convert.ToString(Settings.Width, 16) + "\n";
-            fileText += Convert.ToString(Settings.Height, 16) + "\n";
+            // 2 файл - Frame{fileNum}Color.txt временно упрощён
+            PrintFramesColor(fileNum, Path);
+        }
+
+        private void PrintFrames(int fileNum, string Path)
+        {
+            string fileText = "";
+            string fileName = $@"Frame{fileNum}.data";
+
+            // fileText += Convert.ToString(Settings.Frame.Width, 16) + "\n";
+            // fileText += Convert.ToString(Settings.Frame.Height, 16) + "\n";
 
             int[][] byteViewMapCanvas = GetByteView();
 
@@ -306,7 +296,7 @@ namespace AquaVeilV1
             {
                 for (int j = 0; j < byteViewMapCanvas[0].Length; j++)
                 {
-                    fileText += byteViewMapCanvas[i][j];
+                    fileText += Convert.ToString(byteViewMapCanvas[i][j], 16).ToUpper();
                 }
 
                 fileText += "\n";
@@ -321,24 +311,30 @@ namespace AquaVeilV1
                     fileText = "";
                 }
             }
+        }
 
+        private void PrintFramesColor(int fileNum, string Path)
+        {
+            string fileText = "";
+            string fileName = $"Frame{fileNum}Color.data";
 
+            // for (var i = 0; i < Width; i++)
+            //     {
+            //
+            //         fileText += Convert.ToString(ColumnColor[i].R, 16) + (ColumnColor[i].R == 0 ? "0" : "");
+            //         fileText += Convert.ToString(ColumnColor[i].G, 16) + (ColumnColor[i].G == 0 ? "0" : "");
+            //         fileText += Convert.ToString(ColumnColor[i].B, 16) + (ColumnColor[i].B == 0 ? "0" : "");
+            //         fileText += "\n";
+            //     }
 
-            // 2 файл - Frame{fileNum}Color.txt 
-            fileName = $"Frame{fileNum}Color.bin";
-
-        for (int i = 0; i < Width; i++)
-            {
-
-                fileText += Convert.ToString(ColumnColor[i].R, 16) + (ColumnColor[i].R == 0 ? "0" : "");
-                fileText += Convert.ToString(ColumnColor[i].G, 16) + (ColumnColor[i].G == 0 ? "0" : "");
-                fileText += Convert.ToString(ColumnColor[i].B, 16) + (ColumnColor[i].B == 0 ? "0" : "");
-                fileText += "\n";
-            }
+            fileText += Convert.ToString(ColumnColor[0].R, 16) + (ColumnColor[0].R == 0 ? "0" : "");
+            fileText += Convert.ToString(ColumnColor[0].G, 16) + (ColumnColor[0].G == 0 ? "0" : "");
+            fileText += Convert.ToString(ColumnColor[0].B, 16) + (ColumnColor[0].B == 0 ? "0" : "");
+            fileText += "\n";
 
             using (FileStream fs = new FileStream($@"{Path}\{fileName}", FileMode.OpenOrCreate))
             {
-                using (BinaryWriter fileFrame = new BinaryWriter(fs, Encoding.Default))
+                using (BinaryWriter fileFrame = new BinaryWriter(fs, Encoding.ASCII))
                 {
                     fileFrame.Write(fileText);
                 }
