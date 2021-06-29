@@ -18,7 +18,11 @@ namespace AquaVeilV1
         public frMain()
         {
             InitializeComponent();
+
+            Maps = new LinkedList<clMap>();
         }
+
+        Settings settings = new Settings();
 
         clMap Map;
         LinkedList<clMap> Maps; // Возможно следует пользоваться сразу листом listView!
@@ -64,8 +68,8 @@ namespace AquaVeilV1
         }
 
         private void refreshExColor() {
-            tslColorExBack.BackColor = Map.ColorPenBackground;
-            tslColorExPen.BackColor = Map.ColorPenForeground;
+            tsLColorExBack.BackColor = Map.ColorPenBackground;
+            tsLColorExPen.BackColor = Map.ColorPenForeground;
         }
 
         private void tslColorExPen_Click(object sender, EventArgs e)
@@ -100,8 +104,8 @@ namespace AquaVeilV1
             lvFrameList.LargeImageList = new ImageList();
 
             // Расчёт размеров кадра в listView
-            int lvWidth = (int)Math.Sqrt(Settings.Frame.Width * lvImageSize / Settings.Frame.Height);
-            int lvHeight = (int)Math.Sqrt((Settings.Frame.Height * lvImageSize / Settings.Frame.Width));
+            int lvWidth = (int)Math.Sqrt(Settings.Frame.Instance.Width * lvImageSize / Settings.Frame.Instance.Height);
+            int lvHeight = (int)Math.Sqrt((Settings.Frame.Instance.Height * lvImageSize / Settings.Frame.Instance.Width));
 
             if (lvHeight > 256)
             {
@@ -133,32 +137,26 @@ namespace AquaVeilV1
             }
         }
 
-        private void SettingsRedact()
+        private void SettingsView()
         {
-            Maps = new LinkedList<clMap>();
-            new fSettingsRedact().ShowDialog();
-            scColorPanel.SplitterDistance = Settings.Frame.HeightPix + posCPY * 2;
-            while (Settings.Frame.Width * Settings.Frame.WidthPix > scFrame.Panel2.Width - posX)
+            scColorPanel.SplitterDistance = Settings.Frame.Instance.HeightPix + posCPY * 2;
+            while (Settings.Frame.Instance.Width * Settings.Frame.Instance.WidthPix > scFrame.Panel2.Width - posX)
             {
-                Settings.Frame.WidthPix--;
-                Settings.Frame.HeightPix--;
+                Settings.Frame.Instance.WidthPix--;
+                Settings.Frame.Instance.HeightPix--;
             }
 
-            if (Settings.Frame.Width > 100)
+            if (Settings.Frame.Instance.Width > 100)
             {
-                lvImageSize = Settings.Frame.Width * Settings.Frame.Width + Settings.Frame.Height * Settings.Frame.Height;
+                lvImageSize = Settings.Frame.Instance.Width * Settings.Frame.Instance.Width + Settings.Frame.Instance.Height * Settings.Frame.Instance.Height;
             }
 
-            tssiSettingsLabel.Text = $"Размер кадра: {Settings.Frame.Width} x {Settings.Frame.Height}";
+            tssiSettingsLabel.Text = $"Размер кадра: {Settings.Frame.Instance.Width} x {Settings.Frame.Instance.Height}";
         }
 
         private void tsBTNewFrame_Click(object sender, EventArgs e)
         {
-            if (Maps == null)
-            {
-                SettingsRedact();
-            }
-
+            SettingsView();
             Map = new clMap();
             Map.CreateCanvas();
             Maps.AddLast(Map);
@@ -200,7 +198,7 @@ namespace AquaVeilV1
                     map.printFramesToFiles(num,Path);
                     num++;
                 }
-            }
+        }
 
         private void pbColorPanel_MouseClick(object sender, MouseEventArgs e)
         {
@@ -223,9 +221,9 @@ namespace AquaVeilV1
         private void miAddSomeFrames_Click(object sender, EventArgs e)
         {
             // Добавить форму с количеством кадров
+            SettingsView();
             Map = new clMap();
             Map.CreateCanvas();
-            Maps.AddLast(Map);
         }
 
         private void frMain_Resize(object sender, EventArgs e)
@@ -235,18 +233,18 @@ namespace AquaVeilV1
                 return;
             }
 
-            Settings.Frame.WidthPix = 30;
-            Settings.Frame.HeightPix = 30;
-            while (Settings.Frame.Width * Settings.Frame.WidthPix > scFrame.Panel2.Width - posX)
+            Settings.Frame.Instance.WidthPix = 30;
+            Settings.Frame.Instance.HeightPix = 30;
+            while (Settings.Frame.Instance.Width * Settings.Frame.Instance.WidthPix > scFrame.Panel2.Width - posX)
             {
-                Settings.Frame.WidthPix--;
-                Settings.Frame.HeightPix--;
+                Settings.Frame.Instance.WidthPix--;
+                Settings.Frame.Instance.HeightPix--;
             }
 
             foreach (var VARIABLE in Maps)
             {
-                VARIABLE.PixelWidth = Settings.Frame.WidthPix;
-                VARIABLE.PixelHeight = Settings.Frame.HeightPix;
+                VARIABLE.PixelWidth = Settings.Frame.Instance.WidthPix;
+                VARIABLE.PixelHeight = Settings.Frame.Instance.HeightPix;
             }
 
             lvFrameListRefreshList();
@@ -278,27 +276,28 @@ namespace AquaVeilV1
             }
         }
 
-        private void pbFrameRedact_MouseClick_1(object sender, MouseEventArgs e)
+        private void tsiSettings_Click(object sender, EventArgs e)
         {
-            if (Map == null || e.Button != MouseButtons.Left)
-                return;
+            new fSettingsRedact().ShowDialog();
+            Drawing();
+        }
 
-            Int32 x = e.X;
-            Int32 y = e.Y;
-
-            Int32 xx = (x - posX) / Map.PixelWidth;
-            Int32 yy = (y - posY) / Map.PixelHeight;
-
-            if (xx == lastClickedPix.X && yy == lastClickedPix.Y)
+        private void tsiConnect_Click(object sender, EventArgs e)
+        {
+            new Thread(
+                delegate()
             {
-                return;
+                MessageBox.Show(new DataSender().ConnectToServer());
             }
+                ).Start();
+        }
 
-            lastClickedPix = new Point(xx, yy);
-
-            if (Map.InvertPixel(xx, yy))
+        private void tsBTNewFrame_ButtonClick(object sender, EventArgs e)
+        {
+            DataSender data = new DataSender();
+            for (int i = 0; i < 8; i++)
             {
-                Drawing();
+                data.SendCommand(i);
             }
         }
     }

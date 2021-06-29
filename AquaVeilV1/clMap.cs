@@ -13,11 +13,11 @@ namespace AquaVeilV1
 {
     public class clMap
     {
-        private Int32 _Height = Settings.Frame.Height;
-        private Int32 _Width = Settings.Frame.Width;
+        private Int32 _Height = Settings.Frame.Instance.Height;
+        private Int32 _Width = Settings.Frame.Instance.Width;
 
-        private Int32 _PixelHeight = Settings.Frame.HeightPix;
-        private Int32 _PixelWidth = Settings.Frame.WidthPix;
+        private Int32 _PixelHeight = Settings.Frame.Instance.HeightPix;
+        private Int32 _PixelWidth = Settings.Frame.Instance.WidthPix;
 
         private Color _ColorPenForeground = Color.Red;
         private Color _ColorPenBackground = Color.White;

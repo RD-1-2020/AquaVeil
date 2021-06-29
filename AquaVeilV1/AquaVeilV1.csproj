@@ -35,7 +35,7 @@
     <LangVersion>9</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>swing_set_icon_125852.ico</ApplicationIcon>
+    <ApplicationIcon>icons8-качели-64.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clMap.cs" />
+    <Compile Include="DataSender.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,6 +100,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icons8-качели-64.ico" />
     <Content Include="swing_set_icon_125852.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

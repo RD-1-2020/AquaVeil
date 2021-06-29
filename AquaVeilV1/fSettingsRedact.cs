@@ -20,12 +20,23 @@ namespace AquaVeilV1
 
         private void tssiFrame_Click(object sender, EventArgs e)
         {
-            pgSettings.SelectedObject = (object)Settings.Frame.Instance;
+            
+            pgSettings.SelectedObject = Settings.Frame.Instance;
         }
 
         private void tssiSwingSetting_Click(object sender, EventArgs e)
         {
-            pgSettings.SelectedObject = new Settings.Swing();
+            pgSettings.SelectedObject = Settings.Swing.Instance;
+        }
+
+        private void tssiNet_Click(object sender, EventArgs e)
+        {
+            pgSettings.SelectedObject = Settings.Net.Instance;
+        }
+
+        private void tsBSave_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

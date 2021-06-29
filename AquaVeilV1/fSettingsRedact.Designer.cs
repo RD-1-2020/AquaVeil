@@ -31,11 +31,13 @@ namespace AquaVeilV1
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fSettingsRedact));
             this.scMain = new System.Windows.Forms.SplitContainer();
-            this.pgSettings = new System.Windows.Forms.PropertyGrid();
             this.tsButtonList = new System.Windows.Forms.ToolStrip();
             this.tssiFrame = new System.Windows.Forms.ToolStripButton();
+            this.tssiNetSettings = new System.Windows.Forms.ToolStripButton();
+            this.pgSettings = new System.Windows.Forms.PropertyGrid();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.tssiSwingSetting = new System.Windows.Forms.ToolStripButton();
+            this.tsBSave = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).BeginInit();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
@@ -62,21 +64,14 @@ namespace AquaVeilV1
             this.scMain.SplitterDistance = 143;
             this.scMain.TabIndex = 0;
             // 
-            // pgSettings
-            // 
-            this.pgSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgSettings.Location = new System.Drawing.Point(0, 0);
-            this.pgSettings.Name = "pgSettings";
-            this.pgSettings.Size = new System.Drawing.Size(678, 437);
-            this.pgSettings.TabIndex = 0;
-            this.pgSettings.ToolbarVisible = false;
-            // 
             // tsButtonList
             // 
             this.tsButtonList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tsButtonList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tssiFrame,
-            this.tssiSwingSetting});
+            this.tssiSwingSetting,
+            this.tssiNetSettings,
+            this.tsBSave});
             this.tsButtonList.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.tsButtonList.Location = new System.Drawing.Point(0, 0);
             this.tsButtonList.Name = "tsButtonList";
@@ -97,6 +92,28 @@ namespace AquaVeilV1
             this.tssiFrame.ToolTipText = "Настройки Поля";
             this.tssiFrame.Click += new System.EventHandler(this.tssiFrame_Click);
             // 
+            // tssiNetSettings
+            // 
+            this.tssiNetSettings.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tssiNetSettings.Image = ((System.Drawing.Image)(resources.GetObject("tssiNetSettings.Image")));
+            this.tssiNetSettings.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tssiNetSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tssiNetSettings.Name = "tssiNetSettings";
+            this.tssiNetSettings.Size = new System.Drawing.Size(141, 82);
+            this.tssiNetSettings.Text = "Сеть";
+            this.tssiNetSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.tssiNetSettings.ToolTipText = "Настройка сети";
+            this.tssiNetSettings.Click += new System.EventHandler(this.tssiNet_Click);
+            // 
+            // pgSettings
+            // 
+            this.pgSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgSettings.Location = new System.Drawing.Point(0, 0);
+            this.pgSettings.Name = "pgSettings";
+            this.pgSettings.Size = new System.Drawing.Size(678, 437);
+            this.pgSettings.TabIndex = 0;
+            this.pgSettings.ToolbarVisible = false;
+            // 
             // ssMain
             // 
             this.ssMain.Location = new System.Drawing.Point(0, 437);
@@ -112,11 +129,24 @@ namespace AquaVeilV1
             this.tssiSwingSetting.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.tssiSwingSetting.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tssiSwingSetting.Name = "tssiSwingSetting";
-            this.tssiSwingSetting.Size = new System.Drawing.Size(139, 82);
+            this.tssiSwingSetting.Size = new System.Drawing.Size(141, 82);
             this.tssiSwingSetting.Text = "Подстройка качелей";
             this.tssiSwingSetting.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.tssiSwingSetting.ToolTipText = "Подстройка качелей";
             this.tssiSwingSetting.Click += new System.EventHandler(this.tssiSwingSetting_Click);
+            // 
+            // tsBSave
+            // 
+            this.tsBSave.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tsBSave.Image = ((System.Drawing.Image)(resources.GetObject("tsBSave.Image")));
+            this.tsBSave.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.tsBSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsBSave.Name = "tsBSave";
+            this.tsBSave.Size = new System.Drawing.Size(141, 82);
+            this.tsBSave.Text = "Сохранить";
+            this.tsBSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.tsBSave.ToolTipText = "Настройка сети";
+            this.tsBSave.Click += new System.EventHandler(this.tsBSave_Click);
             // 
             // fSettingsRedact
             // 
@@ -147,6 +177,8 @@ namespace AquaVeilV1
         private System.Windows.Forms.ToolStripButton tssiFrame;
         private System.Windows.Forms.PropertyGrid pgSettings;
         private System.Windows.Forms.StatusStrip ssMain;
+        private System.Windows.Forms.ToolStripButton tssiNetSettings;
         private System.Windows.Forms.ToolStripButton tssiSwingSetting;
+        private System.Windows.Forms.ToolStripButton tsBSave;
     }
 }

@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Design;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace AquaVeilV1
 {
@@ -12,6 +16,7 @@ namespace AquaVeilV1
     {
         /// <summary>
         /// Singleton Pattern
+        /// Настройки поля и clMap
         /// </summary>
         public class Frame
         {
@@ -23,7 +28,7 @@ namespace AquaVeilV1
             /// </summary>
             [Category("Поле")]
             [DisplayName("Длинна")]
-            public static int Width
+            public int Width
             {
                 get => _width;
                 set => _width = value;
@@ -34,7 +39,7 @@ namespace AquaVeilV1
             /// </summary>
             [Category("Поле")]
             [DisplayName("Высота")]
-            public static int Height
+            public int Height
             {
                 get => _height;
                 set => _height = value;
@@ -48,7 +53,7 @@ namespace AquaVeilV1
             /// </summary>
             [Category("Пиксель")]
             [DisplayName("Ширина")]
-            public static int WidthPix
+            public int WidthPix
             {
                 get => _widthPix;
                 set => _widthPix = value;
@@ -60,7 +65,7 @@ namespace AquaVeilV1
             [Category("Пиксель")]
             [DisplayName("Высота")]
             [ReadOnly(true)]
-            public static int HeightPix
+            public int HeightPix
             {
                 get => _heightPix;
                 set => _heightPix = value;
@@ -79,7 +84,11 @@ namespace AquaVeilV1
             }
         }
 
-        public sealed class Swing
+        /// <summary>
+        /// Singleton Pattern
+        /// Настройки качелей
+        /// </summary>
+        public class Swing
         {
             private static readonly Lazy<Swing> instanceHolder =
                 new Lazy<Swing>(() => new Swing());
@@ -102,7 +111,7 @@ namespace AquaVeilV1
             /// </summary>
             [Category("Подстройка")]
             [DisplayName("Коэффициент расстояния между пикселями")]
-            public static int PixSpacing
+            public int PixSpacing
             {
                 get => _pixSpacing;
                 set => _pixSpacing = value;
@@ -113,7 +122,7 @@ namespace AquaVeilV1
             ///</summary>
             [Category("Подстройка")]
             [DisplayName("Коффициент Периода прохождения пикселем полного цикла")]
-            public static int PixPeriod
+            public int PixPeriod
             {
                 get => _pixPeriod;
                 set => _pixPeriod = value;
@@ -124,11 +133,95 @@ namespace AquaVeilV1
             /// </summary>
             [Category("Подстройка")]
             [DisplayName("Минимальная амплитуда отклонения")]
-            public static int PixMinAmplitude
+            public int PixMinAmplitude
             {
                 get => _pixMinAmplitude;
                 set => _pixMinAmplitude = value;
             }
+        }
+
+        /// <summary>
+        /// Singleton Pattern
+        /// Настройки сети
+        /// </summary>
+        public class Net
+        {
+            private static string _swingIp = "127.0.0.1";
+            private static string _port = "8888";
+
+            [Category("Качели")]
+            [DisplayName("IP-Адрес")]
+            public string SwingIp
+            {
+                get => _swingIp;
+                set => _swingIp = value;
+            }
+
+            [Category("Качели")]
+            [DisplayName("Порт")]
+            public string Port
+            {
+                get => _port;
+                set => _port = value;
+            }
+
+            private static readonly Lazy<Net> instanceHolder =
+                new Lazy<Net>(() => new Net());
+
+            public Net()
+            {
+            }
+
+            public static Net Instance
+            {
+                get { return instanceHolder.Value; }
+            }
+
+            /*public class IPAddressEditor : UITypeEditor
+            {
+                private Form IPAddressEditorForm;
+
+                /// <summary>
+                /// Реализация метода редактирования
+                /// </summary>
+                public override Object EditValue(ITypeDescriptorContext context, IServiceProvider provider, Object value)
+                {
+                    if((context != null) && (provider != null)) 
+                    {
+                        IWindowsFormsEditorService svc =
+                            (IWindowsFormsEditorService)
+                            provider.GetService(typeof(IWindowsFormsEditorService));
+
+                        if(svc!= null) 
+                        {
+                            // using (IPAddressEditorForm ipfrm = new IPAddressEditorForm((IPAddress) value))
+                            // {
+                            //     if (svc.ShowDialog(ipfrm) == DialogResult.OK)
+                            //     {
+                            //         value = ipfrm.IP;
+                            //     }
+                            // }
+                        }
+                    }
+
+                    return base.EditValue(context, provider, value);
+                }
+
+                /// <summary>
+                /// Возвращаем стиль редактора - модальное окно
+                /// </summary>
+                public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+                {
+                    if (context != null)
+                    {
+                        return UITypeEditorEditStyle.Modal;
+                    }
+                    else
+                    {
+                        return base.GetEditStyle(context);
+                    }
+                }
+            }*/
         }
     }
 }
