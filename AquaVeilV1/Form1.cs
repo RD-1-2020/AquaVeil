@@ -146,6 +146,12 @@ namespace AquaVeilV1
                 Settings.Frame.Instance.HeightPix--;
             }
 
+            while (Settings.Frame.Instance.Height * Settings.Frame.Instance.HeightPix > scFrame.Panel2.Height - posY)
+            {
+                Settings.Frame.Instance.WidthPix--;
+                Settings.Frame.Instance.HeightPix--;
+            }
+
             if (Settings.Frame.Instance.Width > 100)
             {
                 lvImageSize = Settings.Frame.Instance.Width * Settings.Frame.Instance.Width + Settings.Frame.Instance.Height * Settings.Frame.Instance.Height;
@@ -235,11 +241,7 @@ namespace AquaVeilV1
 
             Settings.Frame.Instance.WidthPix = 30;
             Settings.Frame.Instance.HeightPix = 30;
-            while (Settings.Frame.Instance.Width * Settings.Frame.Instance.WidthPix > scFrame.Panel2.Width - posX)
-            {
-                Settings.Frame.Instance.WidthPix--;
-                Settings.Frame.Instance.HeightPix--;
-            }
+            SettingsView();
 
             foreach (var VARIABLE in Maps)
             {
@@ -299,6 +301,30 @@ namespace AquaVeilV1
             {
                 data.SendCommand(i);
             }
+        }
+
+        private void mfsiImportImage_Click(object sender, EventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog()
+            {
+                Filter = "Images | *.bmp; *.png; *.jpg; *.JPEG"
+            };
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK || Map == null)
+            {
+                return;
+            }
+
+            Bitmap importBmp = new Bitmap(openFileDialog.FileName);
+
+            Map.InsertBmp(importBmp);
+
+            Drawing();
+        }
+
+        private void tsslTcpResponce_Click(object sender, EventArgs e)
+        {
+            new fTCPResponse().ShowDialog();
         }
     }
 }

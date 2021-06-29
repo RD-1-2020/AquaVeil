@@ -340,5 +340,31 @@ namespace AquaVeilV1
                 }
             }
         }
+
+        public void InsertBmp(Bitmap importBmp)
+        {
+            importBmp.ToMonochrome();
+
+            if (importBmp.Width > Width)
+            {
+                importBmp = new Bitmap(importBmp, new Size(Width, (int)((1.0 * importBmp.Height / importBmp.Width) * Height)));
+            }
+
+            if (importBmp.Height > Height)
+            {
+                importBmp = new Bitmap(importBmp, new Size((int)((1.0*importBmp.Height / importBmp.Width) * Width), Height));
+            }
+
+            for (int x = 0; x < importBmp.Width; x++)
+            {
+                for (int y = 0; y < importBmp.Height; y++)
+                {
+                    if (importBmp.GetPixel(x, y).B == 255)
+                    {
+                        InvertPixel(x, y);
+                    }
+                }
+            }
+        }
     }
 }

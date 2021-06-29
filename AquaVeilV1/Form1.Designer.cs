@@ -30,14 +30,14 @@ namespace AquaVeilV1
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frMain));
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.ssBottomMenu = new System.Windows.Forms.StatusStrip();
             this.bmLBItemSettingsInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsiSettings = new System.Windows.Forms.ToolStripButton();
             this.tssiSettingsLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.msMainMenu = new System.Windows.Forms.MenuStrip();
             this.mmItemFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmSaveTo = new System.Windows.Forms.ToolStripMenuItem();
+            this.mssiSaveTo = new System.Windows.Forms.ToolStripMenuItem();
             this.mmItemHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.mmItemSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmSettingsRedact = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,10 +68,12 @@ namespace AquaVeilV1
             this.tsLColorExPen = new System.Windows.Forms.ToolStripLabel();
             this.tsLColorPen = new System.Windows.Forms.ToolStripLabel();
             this.tsLColorExBack = new System.Windows.Forms.ToolStripLabel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.scMain = new System.Windows.Forms.SplitContainer();
             this.tsiLPenSize = new System.Windows.Forms.ToolStripLabel();
             this.tsiTBPenSize = new System.Windows.Forms.ToolStripTextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.scMain = new System.Windows.Forms.SplitContainer();
+            this.mfsiImportImage = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsslTcpResponce = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssBottomMenu.SuspendLayout();
             this.msMainMenu.SuspendLayout();
             this.tsMainMenu.SuspendLayout();
@@ -101,7 +103,8 @@ namespace AquaVeilV1
             this.ssBottomMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.bmLBItemSettingsInfo,
             this.tsiSettings,
-            this.tssiSettingsLabel});
+            this.tssiSettingsLabel,
+            this.tsslTcpResponce});
             this.ssBottomMenu.Location = new System.Drawing.Point(0, 719);
             this.ssBottomMenu.Name = "ssBottomMenu";
             this.ssBottomMenu.Size = new System.Drawing.Size(1147, 22);
@@ -153,17 +156,18 @@ namespace AquaVeilV1
             // mmItemFile
             // 
             this.mmItemFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmSaveTo});
+            this.mssiSaveTo,
+            this.mfsiImportImage});
             this.mmItemFile.Name = "mmItemFile";
             this.mmItemFile.Size = new System.Drawing.Size(48, 20);
             this.mmItemFile.Text = "Файл";
             // 
-            // tsmSaveTo
+            // mssiSaveTo
             // 
-            this.tsmSaveTo.Name = "tsmSaveTo";
-            this.tsmSaveTo.Size = new System.Drawing.Size(142, 22);
-            this.tsmSaveTo.Text = "Сохранить...";
-            this.tsmSaveTo.Click += new System.EventHandler(this.tsmSaveTo_Click);
+            this.mssiSaveTo.Name = "mssiSaveTo";
+            this.mssiSaveTo.Size = new System.Drawing.Size(180, 22);
+            this.mssiSaveTo.Text = "Сохранить...";
+            this.mssiSaveTo.Click += new System.EventHandler(this.tsmSaveTo_Click);
             // 
             // mmItemHelp
             // 
@@ -183,13 +187,13 @@ namespace AquaVeilV1
             // tsmSettingsRedact
             // 
             this.tsmSettingsRedact.Name = "tsmSettingsRedact";
-            this.tsmSettingsRedact.Size = new System.Drawing.Size(128, 22);
+            this.tsmSettingsRedact.Size = new System.Drawing.Size(180, 22);
             this.tsmSettingsRedact.Text = "Изменить";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(125, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // tsMainMenu
             // 
@@ -268,7 +272,7 @@ namespace AquaVeilV1
             this.scRedactor.Panel2.Controls.Add(this.scFrame);
             this.scRedactor.Panel2.Controls.Add(this.tsRedactFrameTools);
             this.scRedactor.Panel2.Controls.Add(this.label1);
-            this.scRedactor.Size = new System.Drawing.Size(1147, 513);
+            this.scRedactor.Size = new System.Drawing.Size(1147, 516);
             this.scRedactor.SplitterDistance = 382;
             this.scRedactor.SplitterWidth = 1;
             this.scRedactor.TabIndex = 0;
@@ -278,10 +282,10 @@ namespace AquaVeilV1
             this.lvFrameList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvFrameList.HideSelection = false;
             this.lvFrameList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem8});
+            listViewItem1});
             this.lvFrameList.Location = new System.Drawing.Point(0, 53);
             this.lvFrameList.Name = "lvFrameList";
-            this.lvFrameList.Size = new System.Drawing.Size(380, 433);
+            this.lvFrameList.Size = new System.Drawing.Size(380, 436);
             this.lvFrameList.TabIndex = 3;
             this.lvFrameList.UseCompatibleStateImageBehavior = false;
             this.lvFrameList.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvFrameList_ItemSelectionChanged);
@@ -293,7 +297,7 @@ namespace AquaVeilV1
             this.flMenuTool.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSplitButton1,
             this.tsBTNewFrame});
-            this.flMenuTool.Location = new System.Drawing.Point(0, 486);
+            this.flMenuTool.Location = new System.Drawing.Point(0, 489);
             this.flMenuTool.Name = "flMenuTool";
             this.flMenuTool.Size = new System.Drawing.Size(380, 25);
             this.flMenuTool.TabIndex = 2;
@@ -315,13 +319,13 @@ namespace AquaVeilV1
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(175, 22);
             this.toolStripMenuItem2.Text = "Несколько кадров";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(175, 22);
             this.toolStripMenuItem3.Text = "Один кадр";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.tsBTNewFrame_Click);
             // 
@@ -381,7 +385,7 @@ namespace AquaVeilV1
             // 
             this.scFrame.Panel2.AutoScroll = true;
             this.scFrame.Panel2.Controls.Add(this.pbFrameRedact);
-            this.scFrame.Size = new System.Drawing.Size(762, 433);
+            this.scFrame.Size = new System.Drawing.Size(762, 436);
             this.scFrame.SplitterDistance = 54;
             this.scFrame.SplitterWidth = 1;
             this.scFrame.TabIndex = 3;
@@ -436,7 +440,7 @@ namespace AquaVeilV1
             this.pbFrameRedact.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbFrameRedact.Location = new System.Drawing.Point(0, 0);
             this.pbFrameRedact.Name = "pbFrameRedact";
-            this.pbFrameRedact.Size = new System.Drawing.Size(762, 378);
+            this.pbFrameRedact.Size = new System.Drawing.Size(762, 381);
             this.pbFrameRedact.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pbFrameRedact.TabIndex = 4;
             this.pbFrameRedact.TabStop = false;
@@ -454,7 +458,7 @@ namespace AquaVeilV1
             this.tsLColorExBack,
             this.tsiLPenSize,
             this.tsiTBPenSize});
-            this.tsRedactFrameTools.Location = new System.Drawing.Point(0, 486);
+            this.tsRedactFrameTools.Location = new System.Drawing.Point(0, 489);
             this.tsRedactFrameTools.Name = "tsRedactFrameTools";
             this.tsRedactFrameTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.tsRedactFrameTools.Size = new System.Drawing.Size(762, 25);
@@ -497,6 +501,19 @@ namespace AquaVeilV1
             this.tsLColorExBack.Text = "     ";
             this.tsLColorExBack.Click += new System.EventHandler(this.tslColorExBack_Click);
             // 
+            // tsiLPenSize
+            // 
+            this.tsiLPenSize.Name = "tsiLPenSize";
+            this.tsiLPenSize.Size = new System.Drawing.Size(83, 22);
+            this.tsiLPenSize.Text = "Размер ручки";
+            // 
+            // tsiTBPenSize
+            // 
+            this.tsiTBPenSize.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.tsiTBPenSize.Name = "tsiTBPenSize";
+            this.tsiTBPenSize.Size = new System.Drawing.Size(100, 25);
+            this.tsiTBPenSize.Text = "1";
+            // 
             // label1
             // 
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -522,22 +539,24 @@ namespace AquaVeilV1
             // 
             this.scMain.Panel1.Controls.Add(this.scRedactor);
             this.scMain.Size = new System.Drawing.Size(1147, 651);
-            this.scMain.SplitterDistance = 513;
+            this.scMain.SplitterDistance = 516;
             this.scMain.SplitterWidth = 1;
             this.scMain.TabIndex = 2;
             // 
-            // tsiLPenSize
+            // mfsiImportImage
             // 
-            this.tsiLPenSize.Name = "tsiLPenSize";
-            this.tsiLPenSize.Size = new System.Drawing.Size(83, 22);
-            this.tsiLPenSize.Text = "Размер ручки";
+            this.mfsiImportImage.Name = "mfsiImportImage";
+            this.mfsiImportImage.Size = new System.Drawing.Size(180, 22);
+            this.mfsiImportImage.Text = "Вставить картинку";
+            this.mfsiImportImage.Click += new System.EventHandler(this.mfsiImportImage_Click);
             // 
-            // tsiTBPenSize
+            // tsslTcpResponce
             // 
-            this.tsiTBPenSize.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.tsiTBPenSize.Name = "tsiTBPenSize";
-            this.tsiTBPenSize.Size = new System.Drawing.Size(100, 25);
-            this.tsiTBPenSize.Text = "1";
+            this.tsslTcpResponce.Name = "tsslTcpResponce";
+            this.tsslTcpResponce.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.tsslTcpResponce.Size = new System.Drawing.Size(192, 17);
+            this.tsslTcpResponce.Text = "Отправить Сообщение на качели";
+            this.tsslTcpResponce.Click += new System.EventHandler(this.tsslTcpResponce_Click);
             // 
             // frMain
             // 
@@ -597,7 +616,7 @@ namespace AquaVeilV1
         private System.Windows.Forms.ToolStripMenuItem tsmSettingsRedact;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ColorDialog cdColorChange;
-        private System.Windows.Forms.ToolStripMenuItem tsmSaveTo;
+        private System.Windows.Forms.ToolStripMenuItem mssiSaveTo;
         private System.Windows.Forms.FolderBrowserDialog fbdExplorer;
         private System.Windows.Forms.ToolStrip tsMainMenu;
         private System.Windows.Forms.ToolStripButton tsiConnect;
@@ -630,6 +649,8 @@ namespace AquaVeilV1
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripLabel tsiLPenSize;
         private System.Windows.Forms.ToolStripTextBox tsiTBPenSize;
+        private System.Windows.Forms.ToolStripMenuItem mfsiImportImage;
+        private System.Windows.Forms.ToolStripStatusLabel tsslTcpResponce;
     }
 }
 
