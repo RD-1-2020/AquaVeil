@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Design;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Forms.Design;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace AquaVeilV1
 {
@@ -20,7 +14,7 @@ namespace AquaVeilV1
         /// </summary>
         public class Frame
         {
-            static private Int32 _width =140;
+            static private Int32 _width = 140;
             static private Int32 _height = 100;
 
             /// <summary>
@@ -222,6 +216,120 @@ namespace AquaVeilV1
                     }
                 }
             }*/
+        }
+
+        /*
+            Синглтон с маппингом форсунок
+            Сохраняется в файл 
+        */
+        public class Map
+        {
+            public uint _numInCanvas { get; set; }
+
+            public uint _addres { get; set; }
+
+            public Map()
+            {
+            }
+
+            public Map(uint numInCanvas, uint addres)
+            {
+                this._numInCanvas = numInCanvas;
+                this._addres = addres;
+            }
+        }
+        
+
+        // Попробовать использовать индексатор?
+        [Serializable]
+        public class InjectorMap
+        { 
+
+            // TODO: ЗАЩИТА ОТ ПРИДУРКА
+            public Map[] _map { get; set; }
+
+            public String _defaultFileName { get; set; } // Стандартный файл с маппингом
+        
+
+            public void getFromFile(String fileName)
+            {
+                try
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(InjectorMap));
+
+                    using (FileStream stream = new FileStream(fileName, FileMode.Open))
+                    {
+                        InjectorMap tmp = (InjectorMap)serializer.Deserialize(stream);
+                        // При вытскивание класса из файла нам нужна только мапа
+                        _map = tmp._map;
+                    }
+                }
+                catch (Exception e) // Если что-то пошло не так - выводим ошибку
+                {
+                    Logger.log(e.Message);
+                }
+            }
+
+            public void saveToFile(String fileName)
+            {
+                try
+                {
+                    if (!fileName.Contains(".xml"))
+                    {
+                        fileName += ".xml"; // Если файл не содержит расширения .xml добавляем его
+                    }
+
+                    XmlSerializer serializer = new XmlSerializer(typeof(InjectorMap));
+
+                    using (FileStream stream = new FileStream(fileName, FileMode.OpenOrCreate))
+                    {
+                        serializer.Serialize(stream,this); // Сохраняем данный класса в файл
+
+                        Logger.log("Маппинг сохранён в файл" + fileName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.log(e.Message);
+                }
+            }
+
+            public void initMapping()
+            {
+                _defaultFileName = "injectorMapping.xml";
+
+                try
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(InjectorMap));
+
+                    using (FileStream stream = new FileStream(_defaultFileName, FileMode.Open))
+                    {
+                        InjectorMap tmp = (InjectorMap)serializer.Deserialize(stream);
+
+                        _map = tmp._map; // Если файл есть то сейвим оттуда
+                    }
+                }
+                catch (FileNotFoundException e)
+                {
+                    _map = new Map[Settings.Frame.Instance.Width];
+
+                    for (uint i = 0; i < Settings.Frame.Instance.Width; i++)
+                    {
+                        _map[i] = new Map(i + 1, i + 1); //  иначе сейвим в новый файл 
+                    }
+
+                    saveToFile(_defaultFileName);
+                }
+                catch (Exception e)
+                {
+                    Logger.log(e.Message);
+                }
+            }
+
+            public void updateMapping()
+            {
+                saveToFile(_defaultFileName);
+            }
         }
     }
 }

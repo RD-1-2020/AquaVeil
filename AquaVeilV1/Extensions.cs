@@ -16,7 +16,6 @@ namespace AquaVeilV1
                 for (int x = 0; x < bitmap.Width; x++)
                 {
                     var pix = bitmap.GetPixel(x, y);
-                    int colorVal = -1;
 
                     if ((pix.R + pix.G + pix.B) / 3 <= 112)
                     {

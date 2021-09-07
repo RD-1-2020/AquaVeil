@@ -219,52 +219,6 @@ namespace AquaVeilV1
             return frameBitmap;
         }
 
-        private int[][] GetByteView()
-        {
-            int[][] ByteFrame = new int[MapCanvas[0].Length][];
-
-            for (int i = 0; i < MapCanvas[0].Length; i++)
-            {
-                ByteFrame[i] = new int[MapCanvas.Length % 4 == 0
-                    ? MapCanvas.Length / 4
-                    : MapCanvas.Length / 4 + MapCanvas.Length % 4];
-            }
-
-            string[] strings = new string[MapCanvas[0].Length];
-            string oneValue="";
-
-
-            for (int i = 0; i < MapCanvas[0].Length; i++)
-            {
-                for (int j = 0; j < MapCanvas.Length; j++)
-                {
-                    strings[i] += MapCanvas[j][i];
-                }
-            }
-
-            for (int i = 0; i < strings.Length; i++)
-            {
-                for (int j = 0,o = 0; j < strings[0].Length; j+=4,o++)
-                {
-                    for (int k = 0; k < 4; k++)
-                    {
-                        try
-                        {
-                            oneValue += strings[i][j + k];
-                        }
-                        catch (Exception)
-                        {
-                            oneValue += 0.ToString();
-                        }
-                    }
-                    ByteFrame[i][o] = Convert.ToInt32(oneValue, 2);
-                    oneValue = "";
-                }
-            }
-
-            return ByteFrame;
-        }
-
         /// <summary>
         /// Функция превращения clMap в файлы
         /// 1 файл - Frame{fileNum}.txt Хранит настройки кадра и сам кадр в виде 
@@ -276,43 +230,125 @@ namespace AquaVeilV1
         public void printFramesToFiles(int fileNum, string Path)
         {
             // 1 файл - Frame{fileNum}.txt
-            PrintFrames(fileNum, Path);
+            printToFileTxt(fileNum);
 
             // 2 файл - Frame{fileNum}Color.txt временно упрощён
-            PrintFramesColor(fileNum, Path);
+            //PrintFramesColor(fileNum, Path);
         }
 
         private void PrintFrames(int fileNum, string Path)
         {
             string fileText = "";
-            string fileName = $@"Frame{fileNum}.data";
+            string fileName = $@"Frame{fileNum}.fav";
 
-            // fileText += Convert.ToString(Settings.Frame.Width, 16) + "\n";
-            // fileText += Convert.ToString(Settings.Frame.Height, 16) + "\n";
+            Int32[][] mappingCanvas = getMappingCanvas();
 
-            int[][] byteViewMapCanvas = GetByteView();
+            uint tempbyte = 0;
+            uint tempbit = 0;
 
-            for (int i = 0; i < byteViewMapCanvas.Length; i++)
+            int countX = (int)Math.Ceiling(Width / 8.0);
+            Byte[,] bMap = new Byte[countX, Height];
+
+            for (int j = 0; j < Height; j++)
+            for (int i = 0; i < countX; i++)
+                bMap[i, j] = 0;
+
+
+            for (int j = 0; j < Height; j++)
+            for (int i = 0; i < countX; i++)
             {
-                for (int j = 0; j < byteViewMapCanvas[0].Length; j++)
+                tempbyte = 0;
+                for (int ii = 0; (ii < 8) && ((i * 8 + ii) < Width); ii++)
                 {
-                    fileText += Convert.ToString(byteViewMapCanvas[i][j], 16).ToUpper();
+                    tempbit = ((UInt32)mappingCanvas[i * 8 + ii][j]) << (7 - ii);
+                    tempbyte = tempbyte | tempbit;
                 }
-
-                fileText += "\n";
+                bMap[i, j] = (byte)tempbyte;
             }
 
 
-            using (FileStream fs = new FileStream($@"{Path}\{fileName}", FileMode.OpenOrCreate))
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
             {
-                using (BinaryWriter fileFrame = new BinaryWriter(fs, Encoding.Default))
+                for (int j = 0; j < Height; j++)
+                for (int i = 0; i < countX; i++)
                 {
-                    fileFrame.Write(fileText);
-                    fileText = "";
+                    writer.Write(bMap[i, j]);
                 }
+
+
+
             }
         }
 
+        public void printToFileTxt(int fileNum)
+        {
+            string fileText = "";
+            string fileName = $@"Frame{fileNum}.txt";
+
+            Int32[][] mappingCanvas = getMappingCanvas();
+
+            uint tempbyte = 0;
+            uint tempbit = 0;
+
+            int countX = (int)Math.Ceiling(Width / 8.0);
+            Byte[,] bMap = new Byte[countX, Height];
+
+            for (int j = 0; j < Height; j++)
+            for (int i = 0; i < countX; i++)
+                bMap[i, j] = 0;
+
+
+            for (int j = 0; j < Height; j++)
+            for (int i = 0; i < countX; i++)
+            {
+                tempbyte = 0;
+                for (int ii = 0; (ii < 8) && ((i * 8 + ii) < Width); ii++)
+                {
+                    tempbit = ((UInt32)mappingCanvas[i * 8 + ii][j]) << (7 - ii);
+                        tempbyte = tempbyte | tempbit;
+                }
+                bMap[i, j] = (byte)tempbyte;
+            }
+
+
+            using (StreamWriter sw = new StreamWriter(fileName, false, System.Text.Encoding.Default))
+            {
+                sw.Write("{");
+
+                for (int j = 0; j < Height; j++)
+                {
+                    sw.Write("{");
+
+                    for (int i = 0; i < countX - 1; i++)
+                        sw.Write("0x" + bMap[i, j].ToString("X2") + ", ");
+                    sw.Write("0x" + bMap[countX - 1, j].ToString("X2"));
+                    sw.Write("},");
+                    sw.WriteLine();
+                }
+                sw.Write("}");
+            }
+        }
+
+        public int[][] getMappingCanvas()
+        {
+            Settings.InjectorMap injectorMap = new Settings.InjectorMap();
+
+            injectorMap.initMapping();
+
+            int[][] mappingCanvas = new int[Settings.Frame.Instance.Width][];
+
+            for (int i = 0; i < MapCanvas.Length; i++)
+            {
+                uint mappingAddres = injectorMap._map[i]._addres;
+
+                mappingCanvas[i] = MapCanvas[mappingAddres - 1];
+            }
+
+            return mappingCanvas;
+        }
+
+
+        // На данный момент не используется
         private void PrintFramesColor(int fileNum, string Path)
         {
             string fileText = "";
