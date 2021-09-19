@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
+using AquaVeilV1.Utils;
 
 namespace AquaVeilV1
 {
@@ -266,7 +267,7 @@ namespace AquaVeilV1
                 }
                 catch (Exception e) // Если что-то пошло не так - выводим ошибку
                 {
-                    Logger.log(e.Message);
+                    Logger.error($"Ошибка при выгрузки маппинга из файла: {fileName}", e);
                 }
             }
 
@@ -285,12 +286,12 @@ namespace AquaVeilV1
                     {
                         serializer.Serialize(stream,this); // Сохраняем данный класса в файл
 
-                        Logger.log("Маппинг сохранён в файл" + fileName);
+                        Logger.info("Маппинг сохранён в файл" + fileName);
                     }
                 }
                 catch (Exception e)
                 {
-                    Logger.log(e.Message);
+                    Logger.info(e.Message);
                 }
             }
 
@@ -322,7 +323,7 @@ namespace AquaVeilV1
                 }
                 catch (Exception e)
                 {
-                    Logger.log(e.Message);
+                    Logger.error("Ошибка при инициализации маппинга для форсунок", e);
                 }
             }
 

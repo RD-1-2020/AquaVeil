@@ -1,5 +1,5 @@
 ﻿
-namespace AquaVeilV1
+namespace AquaVeilV1.Forms
 {
     partial class frMain
     {
