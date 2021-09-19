@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing.Text;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace AquaVeilV1
+namespace AquaVeilV1.DataSenders
 {
-    class DataSender
+    class TcpDataSender : IDataSender
     {
         private static string _targetIp = Settings.Net.Instance.SwingIp;
         private static string _targetPort = Settings.Net.Instance.Port;
@@ -28,7 +23,7 @@ namespace AquaVeilV1
             set => _targetPort = value;
         }
 
-        public string ConnectToServer()
+        public string Connect()
         {
             try
             {
@@ -57,13 +52,11 @@ namespace AquaVeilV1
                     TcpClient client = new TcpClient();
                     client.Connect(_targetIp, int.Parse(_targetPort));
 
-                    NetworkStream stream = client.GetStream();
-                    byte[] data = System.Text.Encoding.UTF8.GetBytes(response);
-                    stream.Write(data, 0, data.Length);
-
-                    // Закрываем потоки
-                    stream.Close();
-                    client.Close();
+                    using (NetworkStream stream = client.GetStream())
+                    {
+                        byte[] data = System.Text.Encoding.UTF8.GetBytes(response);
+                        stream.Write(data, 0, data.Length);
+                    }
 
                     Debug.WriteLine("Успешно!");
                 }

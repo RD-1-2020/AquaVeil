@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using AquaVeilV1.DataSenders;
 
-namespace AquaVeilV1
+namespace AquaVeilV1.Forms
 {
     public partial class frMain : Form
     {
@@ -289,17 +283,17 @@ namespace AquaVeilV1
             new Thread(
                 delegate()
             {
-                MessageBox.Show(new DataSender().ConnectToServer());
+                MessageBox.Show(new TcpDataSender().Connect());
             }
                 ).Start();
         }
 
         private void tsBTNewFrame_ButtonClick(object sender, EventArgs e)
         {
-            DataSender data = new DataSender();
+            TcpDataSender tcpData = new TcpDataSender();
             for (int i = 0; i < 8; i++)
             {
-                data.SendCommand(i);
+                tcpData.SendCommand(i);
             }
         }
 
