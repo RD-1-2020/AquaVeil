@@ -19,5 +19,10 @@ namespace AquaVeilV1.Utils
         {
             Debug.WriteLine($"[ERROR]: {exceptionText}\n[Exception]: {ex.Message}\n{ex.StackTrace}.");
         }
+
+        public static void error(Exception ex)
+        {
+            Debug.WriteLine($"[ERROR]: {ex.Message}\n{ex.StackTrace}.");
+        }
     }
 }

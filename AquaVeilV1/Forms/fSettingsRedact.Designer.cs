@@ -144,7 +144,6 @@ namespace AquaVeilV1.Forms
             this.tsBSave.Text = "Сохранить";
             this.tsBSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.tsBSave.ToolTipText = "Настройка сети";
-            this.tsBSave.Click += new System.EventHandler(this.tsBSave_Click);
             // 
             // pgSettings
             // 
@@ -173,6 +172,8 @@ namespace AquaVeilV1.Forms
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "fSettingsRedact";
             this.Text = "Настройки Проекта";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fSettingsRedact_FormClosed);
+            this.Load += new System.EventHandler(this.fSettingsRedact_Load);
             this.scMain.Panel1.ResumeLayout(false);
             this.scMain.Panel1.PerformLayout();
             this.scMain.Panel2.ResumeLayout(false);

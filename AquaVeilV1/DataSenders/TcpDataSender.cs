@@ -2,13 +2,15 @@
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading;
+using AquaVeilV1.Settings;
+using AquaVeilV1.Utils;
 
 namespace AquaVeilV1.DataSenders
 {
     class TcpDataSender : IDataSender
     {
-        private static string _targetIp = Settings.Net.Instance.SwingIp;
-        private static string _targetPort = Settings.Net.Instance.Port;
+        private static string _targetIp = Net.Instance.SwingIp;
+        private static string _targetPort = Net.Instance.Port;
 
 
         public string TargetIp
@@ -31,14 +33,19 @@ namespace AquaVeilV1.DataSenders
                 client.Connect(_targetIp, int.Parse(_targetPort));
 
                 client.Close();
+
+                Logger.info($"Подключение к {TargetIp}:{TargetPort} успешно установленно");
+
                 return "Успешно!";
             }
             catch (SocketException e)
             {
+                Logger.error(e);
                 return $"Exception: {e.Message}";
             }
             catch (Exception e)
             {
+                Logger.error(e);
                 return $"Exception: {e.Message}";
             }
         }
@@ -62,10 +69,12 @@ namespace AquaVeilV1.DataSenders
                 }
                 catch (SocketException e)
                 {
+                    Logger.error(e);
                     Debug.WriteLine($"Exception: {e.Message}");
                 }
                 catch (Exception e)
                 {
+                    Logger.error(e);
                     Debug.WriteLine($"Exception: {e.Message}");
                 }
             }).Start();
@@ -114,17 +123,17 @@ namespace AquaVeilV1.DataSenders
                 }
                 case 5:
                 {
-                    responseString = constructResponceString(commandNumber, Settings.Swing.Instance.PixSpacing);
+                    responseString = constructResponceString(commandNumber, Swing.Instance.PixSpacing);
                     break;
                 }
                 case 6:
                 {
-                    responseString = constructResponceString(commandNumber, Settings.Swing.Instance.PixPeriod);
+                    responseString = constructResponceString(commandNumber, Swing.Instance.PixPeriod);
                     break;
                 }
                 case 7:
                 {
-                    responseString = constructResponceString(commandNumber, Settings.Swing.Instance.PixMinAmplitude);
+                    responseString = constructResponceString(commandNumber, Swing.Instance.PixMinAmplitude);
                     break;
                 }
             }

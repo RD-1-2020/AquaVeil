@@ -54,16 +54,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clMap.cs" />
+    <Compile Include="Draw\clMap.cs" />
     <Compile Include="DataSenders\ComDataSender.cs" />
     <Compile Include="DataSenders\IDataSender.cs" />
     <Compile Include="DataSenders\TcpDataSender.cs" />
+    <Compile Include="Settings\Frame.cs" />
+    <Compile Include="Settings\InjectorMap.cs" />
+    <Compile Include="Settings\Map.cs" />
+    <Compile Include="Settings\Net.cs" />
+    <Compile Include="Settings\Swing.cs" />
     <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="Forms\Form1.cs">
+    <Compile Include="Forms\frMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\frMain.Designer.cs">
+      <DependentUpon>frMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\fSettingsRedact.cs">
       <SubType>Form</SubType>
@@ -80,9 +85,8 @@
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
-    <EmbeddedResource Include="Forms\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frMain.resx">
+      <DependentUpon>frMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fSettingsRedact.resx">
       <DependentUpon>fSettingsRedact.cs</DependentUpon>

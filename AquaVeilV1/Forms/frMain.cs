@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using AquaVeilV1.DataSenders;
+using AquaVeilV1.Draw;
+using AquaVeilV1.Settings;
 
 namespace AquaVeilV1.Forms
 {
@@ -15,8 +17,6 @@ namespace AquaVeilV1.Forms
 
             Maps = new LinkedList<clMap>();
         }
-
-        Settings settings = new Settings();
 
         clMap Map;
         LinkedList<clMap> Maps; // Возможно следует пользоваться сразу листом listView!
@@ -98,8 +98,8 @@ namespace AquaVeilV1.Forms
             lvFrameList.LargeImageList = new ImageList();
 
             // Расчёт размеров кадра в listView
-            int lvWidth = (int)Math.Sqrt(Settings.Frame.Instance.Width * lvImageSize / Settings.Frame.Instance.Height);
-            int lvHeight = (int)Math.Sqrt((Settings.Frame.Instance.Height * lvImageSize / Settings.Frame.Instance.Width));
+            int lvWidth = (int)Math.Sqrt(Frame.Instance.Width * lvImageSize / Frame.Instance.Height);
+            int lvHeight = (int)Math.Sqrt((Frame.Instance.Height * lvImageSize / Frame.Instance.Width));
 
             if (lvHeight > 256)
             {
@@ -133,25 +133,25 @@ namespace AquaVeilV1.Forms
 
         private void SettingsView()
         {
-            scColorPanel.SplitterDistance = Settings.Frame.Instance.HeightPix + posCPY * 2;
-            while (Settings.Frame.Instance.Width * Settings.Frame.Instance.WidthPix > scFrame.Panel2.Width - posX)
+            scColorPanel.SplitterDistance = Frame.Instance.HeightPix + posCPY * 2;
+            while (Frame.Instance.Width * Frame.Instance.WidthPix > scFrame.Panel2.Width - posX)
             {
-                Settings.Frame.Instance.WidthPix--;
-                Settings.Frame.Instance.HeightPix--;
+                Frame.Instance.WidthPix--;
+                Frame.Instance.HeightPix--;
             }
 
-            while (Settings.Frame.Instance.Height * Settings.Frame.Instance.HeightPix > scFrame.Panel2.Height - posY)
+            while (Frame.Instance.Height * Frame.Instance.HeightPix > scFrame.Panel2.Height - posY)
             {
-                Settings.Frame.Instance.WidthPix--;
-                Settings.Frame.Instance.HeightPix--;
+                Frame.Instance.WidthPix--;
+                Frame.Instance.HeightPix--;
             }
 
-            if (Settings.Frame.Instance.Width > 100)
+            if (Frame.Instance.Width > 100)
             {
-                lvImageSize = Settings.Frame.Instance.Width * Settings.Frame.Instance.Width + Settings.Frame.Instance.Height * Settings.Frame.Instance.Height;
+                lvImageSize = Frame.Instance.Width * Frame.Instance.Width + Frame.Instance.Height * Frame.Instance.Height;
             }
 
-            tssiSettingsLabel.Text = $"Размер кадра: {Settings.Frame.Instance.Width} x {Settings.Frame.Instance.Height}";
+            tssiSettingsLabel.Text = $"Размер кадра: {Frame.Instance.Width} x {Frame.Instance.Height}";
         }
 
         private void tsBTNewFrame_Click(object sender, EventArgs e)
@@ -233,14 +233,14 @@ namespace AquaVeilV1.Forms
                 return;
             }
 
-            Settings.Frame.Instance.WidthPix = 30;
-            Settings.Frame.Instance.HeightPix = 30;
+            Frame.Instance.WidthPix = 30;
+            Frame.Instance.HeightPix = 30;
             SettingsView();
 
             foreach (var VARIABLE in Maps)
             {
-                VARIABLE.PixelWidth = Settings.Frame.Instance.WidthPix;
-                VARIABLE.PixelHeight = Settings.Frame.Instance.HeightPix;
+                VARIABLE.PixelWidth = Frame.Instance.WidthPix;
+                VARIABLE.PixelHeight = Frame.Instance.HeightPix;
             }
 
             lvFrameListRefreshList();
