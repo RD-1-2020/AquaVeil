@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using AquaVeilV1.DataSenders;
 using AquaVeilV1.Draw;
 using AquaVeilV1.Settings;
+using AquaVeilV1.Utils;
 
 namespace AquaVeilV1.Forms
 {
@@ -21,30 +22,32 @@ namespace AquaVeilV1.Forms
         clMap Map;
         LinkedList<clMap> Maps; // Возможно следует пользоваться сразу листом listView!
 
+        private ComDataSender comDataSender;
+
         /// <summary>
         /// Размер кадров отображаемых в listView
         /// </summary>
-        static Int32 lvImageSize = 2400;
+        private static Int32 lvImageSize = 2400;
 
         /// <summary>
         /// Положение редактируемого кадра
         /// </summary>
-        static Int32 posX = 20;
+        private static Int32 posX = 20;
 
         /// <summary>
         /// Положение редактируемого кадра
         /// </summary>
-        static Int32 posY = 10;
+        private static Int32 posY = 10;
 
         /// <summary>
         /// Положение панели цветов по иксу совпдает с posX
         /// </summary>
-        static Int32 posCPX = posX;
+        private static Int32 posCPX = posX;
 
         /// <summary>
         /// Положение панели цветов
         /// </summary>
-        static Int32 posCPY = 10;
+        private static Int32 posCPY = 10;
 
         private Point lastClickedPix = new Point(-1,-1);
 
@@ -195,7 +198,7 @@ namespace AquaVeilV1.Forms
 
             Path = fbdExplorer.SelectedPath;
                 foreach (clMap map in Maps) {
-                    map.printFramesToFiles(num,Path);
+                    map.printFramesToFiles(num);
                     num++;
                 }
         }
@@ -319,6 +322,35 @@ namespace AquaVeilV1.Forms
         private void tsslTcpResponce_Click(object sender, EventArgs e)
         {
             new fTCPResponse().ShowDialog();
+        }
+
+        private void tsmiComConnect_Click(object sender, EventArgs e)
+        {
+            comDataSender = new ComDataSender();
+
+            new Thread(delegate()
+            {
+                String connectResult = comDataSender.Connect();
+
+                MessageBox.Show(connectResult);
+            }).Start();
+        }
+
+        private void tsmiComTest_Click(object sender, EventArgs e)
+        {
+            new Thread(delegate()
+            {
+                if (comDataSender == null)
+                {
+                    Logger.error("Попытка отправить данные без соединения с устройством");
+
+                    MessageBox.Show("Попытка отправить данные без соединения с устройством");
+
+                    return;
+                }
+
+                MessageBox.Show(comDataSender.SendTestData());
+            }).Start();
         }
     }
 }

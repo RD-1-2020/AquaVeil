@@ -2,18 +2,18 @@
 using System.Drawing;
 using System.IO;
 using System.Text;
-using AquaVeilV1.Settings;
+using AquaVeilV1;
 using AquaVeilV1.Utils;
 
 namespace AquaVeilV1.Draw
 {
     public class clMap
     {
-        private Int32 _Height = Frame.Instance.Height;
-        private Int32 _Width = Frame.Instance.Width;
+        private Int32 _Height = Settings.Frame.Instance.Height;
+        private Int32 _Width = Settings.Frame.Instance.Width;
 
-        private Int32 _PixelHeight = Frame.Instance.HeightPix;
-        private Int32 _PixelWidth = Frame.Instance.WidthPix;
+        private Int32 _PixelHeight = Settings.Frame.Instance.HeightPix;
+        private Int32 _PixelWidth = Settings.Frame.Instance.WidthPix;
 
         private Color _ColorPenForeground = Color.Red;
         private Color _ColorPenBackground = Color.White;
@@ -73,15 +73,23 @@ namespace AquaVeilV1.Draw
         public Boolean InvertPixel(Int32 x, Int32 y)
         {
             if (x >= Width || x<0)
+            {
                 return false;
+            }
 
             if (y >= Height || y<0)
+            {
                 return false;
+            }
 
             if (MapCanvas[x][y] == 0)
+            {
                 MapCanvas[x][y] = 1;
+            }
             else
+            {
                 MapCanvas[x][y] = 0;
+            }
 
             return true;
         }
@@ -118,7 +126,10 @@ namespace AquaVeilV1.Draw
         public bool changeColumnColor(Color newColor, int colorIndex)
         {
             if (colorIndex >= Width || colorIndex < 0)
+            {
                 return false;
+            }
+
             ColumnColor[colorIndex] = newColor;
             return true;
         }
@@ -151,8 +162,7 @@ namespace AquaVeilV1.Draw
         /// 2 файл - Frame{fileNum}Color.txt Хранит цвета кадра по столбцам
         /// </summary>
         /// <param name="fileNum">Часть имени файла</param>
-        /// <param name="Path">Путь где сохранять файл</param>
-        public void printFramesToFiles(int fileNum, string Path)
+        public void printFramesToFiles(int fileNum)
         {
             // 1 файл - Frame{fileNum}.txt
             printToFileTxt(fileNum);
@@ -162,8 +172,7 @@ namespace AquaVeilV1.Draw
         /// Запись в бинарный файл
         /// </summary>
         /// <param name="fileNum"></param>
-        /// <param name="Path"></param>
-        private void PrintFrames(int fileNum, string Path)
+        private void PrintFrames(int fileNum)
         {
             string fileText = "";
             string fileName = $@"Frame{fileNum}.fav";
@@ -210,6 +219,8 @@ namespace AquaVeilV1.Draw
                     }
                 }
             }
+
+            Logger.info($"Кадр {fileNum} был записан в файл: {fileName}");
         }
 
         /// <summary>
@@ -219,7 +230,6 @@ namespace AquaVeilV1.Draw
         /// <param name="Path"></param>
         public void printToFileTxt(int fileNum)
         {
-            string fileText = "";
             string fileName = $@"Frame{fileNum}.txt";
 
             Int32[][] mappingCanvas = getMappingCanvas();
@@ -271,15 +281,17 @@ namespace AquaVeilV1.Draw
                 }
                 sw.Write("}");
             }
+
+            Logger.info($"Кадр {fileNum} был записан в файл: {fileName}");
         }
 
         public int[][] getMappingCanvas()
         {
-            InjectorMap injectorMap = new InjectorMap();
+            Settings.InjectorMap injectorMap = new Settings.InjectorMap();
 
             injectorMap.initMapping();
 
-            int[][] mappingCanvas = new int[Frame.Instance.Width][];
+            int[][] mappingCanvas = new int[Settings.Frame.Instance.Width][];
 
             for (int i = 0; i < MapCanvas.Length; i++)
             {
