@@ -48,14 +48,10 @@ namespace AquaVeilV1.DataSenders
             {
                 Logger.info($"Установленно соединение с устройством на порте: {_comPortName}");
 
+                ComPort.BaudRate = 115200;
                 ComPort.Encoding = Encoding.ASCII;
                 ComPort.WriteTimeout = 500;
                 ComPort.ReadTimeout = 500;
-
-                String response = "start";
-
-                byte[] data = System.Text.Encoding.ASCII.GetBytes(response);
-                ComPort.Write(data, 0, data.Length);
             }
             else
             {
@@ -87,11 +83,19 @@ namespace AquaVeilV1.DataSenders
                 return request;
             }
 
-            response = "~19WR|FFFFFFFFFFFFFFFFFFFFFFFFFFFF0A";
+            response = "~" + (char)8 + "start" + (char)10;
 
-            byte[] data = System.Text.Encoding.ASCII.GetBytes(response);
+            //response = "~" + (char)(20) + "wr|"
+            //+ (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120)
+            //           + (char)(10);
+
+            byte[] data = Encoding.ASCII.GetBytes(response);
             ComPort.Write(data, 0, data.Length);
 
+            response = "~" + (char)9 + "inv_on" + (char)10;
+
+            data = Encoding.ASCII.GetBytes(response);
+            ComPort.Write(data, 0, data.Length);
 
             request = "Тестовая строка была отправленна";
 

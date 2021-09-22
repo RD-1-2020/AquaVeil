@@ -330,9 +330,7 @@ namespace AquaVeilV1.Forms
 
             new Thread(delegate()
             {
-                String connectResult = comDataSender.Connect();
-
-                MessageBox.Show(connectResult);
+                comDataSender.Connect();
             }).Start();
         }
 
@@ -344,12 +342,10 @@ namespace AquaVeilV1.Forms
                 {
                     Logger.error("Попытка отправить данные без соединения с устройством");
 
-                    MessageBox.Show("Попытка отправить данные без соединения с устройством");
-
                     return;
                 }
 
-                MessageBox.Show(comDataSender.SendTestData());
+                comDataSender.SendTestData();
             }).Start();
         }
     }
