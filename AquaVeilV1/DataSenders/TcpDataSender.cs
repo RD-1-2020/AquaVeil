@@ -121,21 +121,6 @@ namespace AquaVeilV1.DataSenders
                     responseString = constructResponceString(commandNumber, DateTime.Now.Month);
                     break;
                 }
-                case 5:
-                {
-                    responseString = constructResponceString(commandNumber, Swing.Instance.PixSpacing);
-                    break;
-                }
-                case 6:
-                {
-                    responseString = constructResponceString(commandNumber, Swing.Instance.PixPeriod);
-                    break;
-                }
-                case 7:
-                {
-                    responseString = constructResponceString(commandNumber, Swing.Instance.PixMinAmplitude);
-                    break;
-                }
             }
             SendData(responseString+"\0");
         }

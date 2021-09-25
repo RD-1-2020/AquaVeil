@@ -285,6 +285,59 @@ namespace AquaVeilV1.Draw
             Logger.info($"Кадр {fileNum} был записан в файл: {fileName}");
         }
 
+        public Byte[][] getMapFromCom()
+        {
+            Int32[][] mappingCanvas = getMappingCanvas();
+
+            uint tempbyte = 0;
+            uint tempbit = 0;
+
+            int countX = (int)Math.Ceiling(Width / 8.0);
+            Byte[,] bMap = new Byte[countX, Height];
+
+            for (int j = 0; j < Height; j++)
+            {
+                for (int i = 0; i < countX; i++)
+                {
+                    bMap[i, j] = 0;
+                }
+            }
+
+
+            for (int j = 0; j < Height; j++)
+            {
+                for (int i = 0; i < countX; i++)
+                {
+                    tempbyte = 0;
+                    for (int ii = 0; (ii < 8) && ((i * 8 + ii) < Width); ii++)
+                    {
+                        tempbit = ((UInt32)mappingCanvas[i * 8 + ii][j]) << (7 - ii);
+                        tempbyte = tempbyte | tempbit;
+                    }
+
+                    bMap[i, j] = (byte)tempbyte;
+                }
+            }
+
+            Byte[][] result = new Byte[Height][];
+
+            for (int i = 0; i < Height; i++)
+            {
+                result[i] = new Byte[countX+1];
+            }
+
+            for (Byte j = 0; j < Height; j++)
+            {
+                result[j][0] = j;
+                for (int i = 0; i < countX - 1; i++)
+                {
+                        result[j][i+1] = bMap[i, j];
+                }
+            }
+
+            return result;
+        }
+
         public int[][] getMappingCanvas()
         {
             Settings.InjectorMap injectorMap = new Settings.InjectorMap();

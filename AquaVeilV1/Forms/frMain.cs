@@ -15,8 +15,6 @@ namespace AquaVeilV1.Forms
         public frMain()
         {
             InitializeComponent();
-
-            Maps = new LinkedList<clMap>();
         }
 
         clMap Map;
@@ -50,6 +48,18 @@ namespace AquaVeilV1.Forms
         private static Int32 posCPY = 10;
 
         private Point lastClickedPix = new Point(-1,-1);
+
+        private void frMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Settings.Swing.Instance.saveToFile();
+        }
+
+        private void frMain_Load(object sender, EventArgs e)
+        {
+            Maps = new LinkedList<clMap>();
+
+            comDataSender = new ComDataSender();
+        }
 
         private void Drawing() {
             if (Map == null)
@@ -278,6 +288,7 @@ namespace AquaVeilV1.Forms
         private void tsiSettings_Click(object sender, EventArgs e)
         {
             new fSettingsRedact().ShowDialog();
+
             Drawing();
         }
 
@@ -324,29 +335,19 @@ namespace AquaVeilV1.Forms
             new fTCPResponse().ShowDialog();
         }
 
-        private void tsmiComConnect_Click(object sender, EventArgs e)
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            comDataSender = new ComDataSender();
-
-            new Thread(delegate()
-            {
-                comDataSender.Connect();
-            }).Start();
+            comDataSender.sendStart();
         }
 
-        private void tsmiComTest_Click(object sender, EventArgs e)
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new Thread(delegate()
-            {
-                if (comDataSender == null)
-                {
-                    Logger.error("Попытка отправить данные без соединения с устройством");
+            comDataSender.sendStop();
+        }
 
-                    return;
-                }
-
-                comDataSender.SendTestData();
-            }).Start();
+        private void tssiSendNowFrame_Click(object sender, EventArgs e)
+        {
+            comDataSender.SendFrame(Map);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace AquaVeilV1.Forms
 
         private void tssiSwingSetting_Click(object sender, EventArgs e)
         {
-            pgSettings.SelectedObject = Swing.Instance;
+            new fSwingSettings().Show();
         }
 
         private void tssiNet_Click(object sender, EventArgs e)

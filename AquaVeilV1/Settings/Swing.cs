@@ -1,5 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
+using System.IO;
+using System.Xml.Serialization;
+using AquaVeilV1.Utils;
 
 namespace AquaVeilV1.Settings
 {
@@ -7,6 +9,7 @@ namespace AquaVeilV1.Settings
     /// Singleton Pattern
     /// Настройки качелей
     /// </summary>
+    [Serializable]
     public class Swing
     {
         private static readonly Lazy<Swing> instanceHolder =
@@ -17,41 +20,59 @@ namespace AquaVeilV1.Settings
             get { return instanceHolder.Value; }
         }
 
-        private static Int32 _pixSpacing = 1;
-        private static Int32 _pixPeriod = 1;
-        private static Int32 _pixMinAmplitude = 100;
+        public String fileName = "SwingSettings.xml";
 
-        /// <summary>
-        /// Коэффициент расстояния между пикселями
-        /// </summary>
-        [Category("Подстройка")]
-        [DisplayName("Коэффициент расстояния между пикселями")]
-        public int PixSpacing
+        public byte tic_data;
+        public byte tic_clk;
+        public byte tic_latch;
+        public byte tic_clear;
+        public UInt16 tic_pause;
+
+        public void getFromFile()
         {
-            get => _pixSpacing;
-            set => _pixSpacing = value;
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Swing));
+
+                using (FileStream stream = new FileStream(fileName, FileMode.Open))
+                {
+                    Swing tmp = (Swing) serializer.Deserialize(stream);
+
+                    tic_data = tmp.tic_data;
+                    tic_clk = tmp.tic_clk;
+                    tic_latch = tmp.tic_latch;
+                    tic_clear = tmp.tic_clear;
+                    tic_pause = tmp.tic_pause;
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                saveToFile();
+                getFromFile();
+            }
+            catch (Exception e)
+            {
+                Logger.error($"Ошибка при получении настроек качелей из файла \"{fileName}\"", e);
+            }
         }
 
-        /// <summary>
-        /// Коффициент Периода прохождения пикселем полного цикла
-        ///</summary>
-        [Category("Подстройка")]
-        [DisplayName("Коффициент Периода прохождения пикселем полного цикла")]
-        public int PixPeriod
+        public void saveToFile()
         {
-            get => _pixPeriod;
-            set => _pixPeriod = value;
-        }
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Swing));
 
-        /// <summary>
-        /// Минимальная амплитуда отклонения
-        /// </summary>
-        [Category("Подстройка")]
-        [DisplayName("Минимальная амплитуда отклонения")]
-        public int PixMinAmplitude
-        {
-            get => _pixMinAmplitude;
-            set => _pixMinAmplitude = value;
+                using (FileStream stream = new FileStream(fileName, FileMode.OpenOrCreate))
+                {
+                    serializer.Serialize(stream, this);
+
+                    Logger.info($"Настройки качелей сохранены в файл: {fileName}");
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.error($"Ошибка при сохранении файла \"{fileName}\"", e);
+            }
         }
     }
 }

@@ -54,10 +54,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataSenders\SwingCommands.cs" />
     <Compile Include="Draw\clMap.cs" />
     <Compile Include="DataSenders\ComDataSender.cs" />
     <Compile Include="DataSenders\IDataSender.cs" />
     <Compile Include="DataSenders\TcpDataSender.cs" />
+    <Compile Include="Forms\fSwingSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fSwingSettings.Designer.cs">
+      <DependentUpon>fSwingSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings\Frame.cs" />
     <Compile Include="Settings\InjectorMap.cs" />
     <Compile Include="Settings\Map.cs" />
@@ -90,6 +97,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fSettingsRedact.resx">
       <DependentUpon>fSettingsRedact.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\fSwingSettings.resx">
+      <DependentUpon>fSwingSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fTCPResponse.resx">
       <DependentUpon>fTCPResponse.cs</DependentUpon>

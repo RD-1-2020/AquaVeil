@@ -30,7 +30,7 @@ namespace AquaVeilV1.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frMain));
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
             this.ssBottomMenu = new System.Windows.Forms.StatusStrip();
             this.bmLBItemSettingsInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsiSettings = new System.Windows.Forms.ToolStripButton();
@@ -45,9 +45,11 @@ namespace AquaVeilV1.Forms
             this.tsmSettingsRedact = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.cOMпортToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiComConnect = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiComSendFrames = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiComTest = new System.Windows.Forms.ToolStripMenuItem();
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tssiSendFrames = new System.Windows.Forms.ToolStripMenuItem();
+            this.tssiSendNowFrame = new System.Windows.Forms.ToolStripMenuItem();
             this.cdColorChange = new System.Windows.Forms.ColorDialog();
             this.fbdExplorer = new System.Windows.Forms.FolderBrowserDialog();
             this.tsMainMenu = new System.Windows.Forms.ToolStrip();
@@ -218,32 +220,46 @@ namespace AquaVeilV1.Forms
             // cOMпортToolStripMenuItem
             // 
             this.cOMпортToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiComConnect,
-            this.tsmiComSendFrames,
-            this.tsmiComTest});
+            this.startToolStripMenuItem,
+            this.stopToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.tssiSendFrames,
+            this.tssiSendNowFrame});
             this.cOMпортToolStripMenuItem.Name = "cOMпортToolStripMenuItem";
             this.cOMпортToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
             this.cOMпортToolStripMenuItem.Text = "COM-порт";
             // 
-            // tsmiComConnect
+            // startToolStripMenuItem
             // 
-            this.tsmiComConnect.Name = "tsmiComConnect";
-            this.tsmiComConnect.Size = new System.Drawing.Size(226, 22);
-            this.tsmiComConnect.Text = "Подключиться";
-            this.tsmiComConnect.Click += new System.EventHandler(this.tsmiComConnect_Click);
+            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
-            // tsmiComSendFrames
+            // stopToolStripMenuItem
             // 
-            this.tsmiComSendFrames.Name = "tsmiComSendFrames";
-            this.tsmiComSendFrames.Size = new System.Drawing.Size(226, 22);
-            this.tsmiComSendFrames.Text = "Отправить кадры";
+            this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            this.stopToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.stopToolStripMenuItem.Text = "Stop";
+            this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
             // 
-            // tsmiComTest
+            // toolStripMenuItem4
             // 
-            this.tsmiComTest.Name = "tsmiComTest";
-            this.tsmiComTest.Size = new System.Drawing.Size(226, 22);
-            this.tsmiComTest.Text = "Отправить тестовую строку";
-            this.tsmiComTest.Click += new System.EventHandler(this.tsmiComTest_Click);
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(208, 6);
+            // 
+            // tssiSendFrames
+            // 
+            this.tssiSendFrames.Name = "tssiSendFrames";
+            this.tssiSendFrames.Size = new System.Drawing.Size(211, 22);
+            this.tssiSendFrames.Text = "Отправить кадры";
+            // 
+            // tssiSendNowFrame
+            // 
+            this.tssiSendNowFrame.Name = "tssiSendNowFrame";
+            this.tssiSendNowFrame.Size = new System.Drawing.Size(211, 22);
+            this.tssiSendNowFrame.Text = "Отправить текущий кадр";
+            this.tssiSendNowFrame.Click += new System.EventHandler(this.tssiSendNowFrame_Click);
             // 
             // tsMainMenu
             // 
@@ -322,7 +338,7 @@ namespace AquaVeilV1.Forms
             this.scRedactor.Panel2.Controls.Add(this.scFrame);
             this.scRedactor.Panel2.Controls.Add(this.tsRedactFrameTools);
             this.scRedactor.Panel2.Controls.Add(this.label1);
-            this.scRedactor.Size = new System.Drawing.Size(1147, 525);
+            this.scRedactor.Size = new System.Drawing.Size(1147, 534);
             this.scRedactor.SplitterDistance = 382;
             this.scRedactor.SplitterWidth = 1;
             this.scRedactor.TabIndex = 0;
@@ -332,10 +348,10 @@ namespace AquaVeilV1.Forms
             this.lvFrameList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvFrameList.HideSelection = false;
             this.lvFrameList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem2});
             this.lvFrameList.Location = new System.Drawing.Point(0, 53);
             this.lvFrameList.Name = "lvFrameList";
-            this.lvFrameList.Size = new System.Drawing.Size(380, 445);
+            this.lvFrameList.Size = new System.Drawing.Size(380, 454);
             this.lvFrameList.TabIndex = 3;
             this.lvFrameList.UseCompatibleStateImageBehavior = false;
             this.lvFrameList.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvFrameList_ItemSelectionChanged);
@@ -347,7 +363,7 @@ namespace AquaVeilV1.Forms
             this.flMenuTool.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSplitButton1,
             this.tsBTNewFrame});
-            this.flMenuTool.Location = new System.Drawing.Point(0, 498);
+            this.flMenuTool.Location = new System.Drawing.Point(0, 507);
             this.flMenuTool.Name = "flMenuTool";
             this.flMenuTool.Size = new System.Drawing.Size(380, 25);
             this.flMenuTool.TabIndex = 2;
@@ -435,7 +451,7 @@ namespace AquaVeilV1.Forms
             // 
             this.scFrame.Panel2.AutoScroll = true;
             this.scFrame.Panel2.Controls.Add(this.pbFrameRedact);
-            this.scFrame.Size = new System.Drawing.Size(762, 445);
+            this.scFrame.Size = new System.Drawing.Size(762, 454);
             this.scFrame.SplitterDistance = 54;
             this.scFrame.SplitterWidth = 1;
             this.scFrame.TabIndex = 3;
@@ -490,7 +506,7 @@ namespace AquaVeilV1.Forms
             this.pbFrameRedact.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbFrameRedact.Location = new System.Drawing.Point(0, 0);
             this.pbFrameRedact.Name = "pbFrameRedact";
-            this.pbFrameRedact.Size = new System.Drawing.Size(762, 390);
+            this.pbFrameRedact.Size = new System.Drawing.Size(762, 399);
             this.pbFrameRedact.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pbFrameRedact.TabIndex = 4;
             this.pbFrameRedact.TabStop = false;
@@ -508,7 +524,7 @@ namespace AquaVeilV1.Forms
             this.tsLColorExBack,
             this.tsiLPenSize,
             this.tsiTBPenSize});
-            this.tsRedactFrameTools.Location = new System.Drawing.Point(0, 498);
+            this.tsRedactFrameTools.Location = new System.Drawing.Point(0, 507);
             this.tsRedactFrameTools.Name = "tsRedactFrameTools";
             this.tsRedactFrameTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.tsRedactFrameTools.Size = new System.Drawing.Size(762, 25);
@@ -589,7 +605,7 @@ namespace AquaVeilV1.Forms
             // 
             this.scMain.Panel1.Controls.Add(this.scRedactor);
             this.scMain.Size = new System.Drawing.Size(1147, 651);
-            this.scMain.SplitterDistance = 525;
+            this.scMain.SplitterDistance = 534;
             this.scMain.SplitterWidth = 1;
             this.scMain.TabIndex = 2;
             // 
@@ -606,6 +622,8 @@ namespace AquaVeilV1.Forms
             this.MainMenuStrip = this.msMainMenu;
             this.Name = "frMain";
             this.Text = "Качели";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frMain_FormClosing);
+            this.Load += new System.EventHandler(this.frMain_Load);
             this.Resize += new System.EventHandler(this.frMain_Resize);
             this.ssBottomMenu.ResumeLayout(false);
             this.ssBottomMenu.PerformLayout();
@@ -687,9 +705,11 @@ namespace AquaVeilV1.Forms
         private System.Windows.Forms.ToolStripMenuItem mfsiImportImage;
         private System.Windows.Forms.ToolStripStatusLabel tsslTcpResponce;
         private System.Windows.Forms.ToolStripMenuItem cOMпортToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tsmiComConnect;
-        private System.Windows.Forms.ToolStripMenuItem tsmiComSendFrames;
-        private System.Windows.Forms.ToolStripMenuItem tsmiComTest;
+        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem tssiSendFrames;
+        private System.Windows.Forms.ToolStripMenuItem tssiSendNowFrame;
     }
 }
 

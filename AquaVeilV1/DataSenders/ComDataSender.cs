@@ -3,6 +3,8 @@ using System.IO;
 using System.IO.Ports;
 using System.Text;
 using System.Threading;
+using AquaVeilV1.Draw;
+using AquaVeilV1.Settings;
 using AquaVeilV1.Utils;
 
 namespace AquaVeilV1.DataSenders
@@ -46,12 +48,12 @@ namespace AquaVeilV1.DataSenders
             _comPortName = ComPort.PortName;
             if (_comPort.IsOpen)
             {
-                Logger.info($"Установленно соединение с устройством на порте: {_comPortName}");
-
                 ComPort.BaudRate = 115200;
                 ComPort.Encoding = Encoding.ASCII;
                 ComPort.WriteTimeout = 500;
                 ComPort.ReadTimeout = 500;
+
+                Logger.info($"Установленно соединение с устройством на порте: {_comPortName}");
             }
             else
             {
@@ -66,40 +68,49 @@ namespace AquaVeilV1.DataSenders
 
         public void SendData(string response)
         {
-            throw new NotImplementedException();
-        }
-
-        public String SendTestData()
-        {
-            String request;
-            String response;
-
             if (!ComPort.IsOpen)
             {
-                request = "Для отправки для начала установите соединение с устройством";
-
-                Logger.error("Попытка отправить данные без соединения с устройством");
-
-                return request;
+                Connect();
             }
 
-            response = "~" + (char)8 + "start" + (char)10;
+            try
+            {
+                byte[] data = Encoding.ASCII.GetBytes(response);
+                ComPort.Write(data, 0, data.Length);
+            }
+            catch (Exception ex)
+            {
+                Logger.error("Порт занят или устройство не подключено!", ex);
+            }
 
-            //response = "~" + (char)(20) + "wr|"
-            //+ (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120) + (char)(120)
-            //           + (char)(10);
+            ComPort.Close();
+        }
 
-            byte[] data = Encoding.ASCII.GetBytes(response);
-            ComPort.Write(data, 0, data.Length);
+        public void sendStart()
+        {
+            SendData(SwingCommands.Start);
+        }
 
-            response = "~" + (char)9 + "inv_on" + (char)10;
+        public void sendStop()
+        {
+            SendData(SwingCommands.Stop);
+        }
 
-            data = Encoding.ASCII.GetBytes(response);
-            ComPort.Write(data, 0, data.Length);
+        public void SendSettings()
+        {
+            SendData(SwingCommands.TimeRg());
+        }
 
-            request = "Тестовая строка была отправленна";
+        public void SendFrame(clMap map)
+        {
+            byte[][] frameMap = map.getMapFromCom();
 
-            return request;
+            for (int i = 0; i < map.Height; i++)
+            {
+                SendData(SwingCommands.writeLine(frameMap[i]));
+
+                Thread.Sleep(400);
+            }
         }
 
         public SerialPort ComPort

@@ -9,8 +9,8 @@ namespace AquaVeilV1.Settings
     /// </summary>
     public class Frame
     {
-        static private Int32 _width = 140;
-        static private Int32 _height = 100;
+        static private Int32 _width = 112;
+        static private Int32 _height = 3;
 
         /// <summary>
         /// Ширина кадра

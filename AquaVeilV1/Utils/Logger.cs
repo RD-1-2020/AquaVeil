@@ -41,9 +41,20 @@ namespace AquaVeilV1.Utils
 
         private static void printToFile(String logMsg)
         {
-            using (StreamWriter sw = new StreamWriter("Log.txt", true))
+            try
             {
-                sw.WriteLineAsync(logMsg);
+                using (StreamWriter sw = new StreamWriter("Log.txt", true))
+                {
+                    sw.WriteLineAsync(logMsg);
+                }
+            }
+            catch
+            {
+                new Thread(delegate() {
+                    Thread.Sleep(100);
+                    printToFile(logMsg);
+                }).Start();
+                
             }
         }
     }
