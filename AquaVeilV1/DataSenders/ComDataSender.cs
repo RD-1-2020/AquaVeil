@@ -75,8 +75,10 @@ namespace AquaVeilV1.DataSenders
 
             try
             {
-                byte[] data = Encoding.ASCII.GetBytes(response);
+                byte[] data = Encoding.GetEncoding(28591).GetBytes(response);
                 ComPort.Write(data, 0, data.Length);
+
+                Logger.info(Encoding.GetEncoding(28591).GetString(data));
             }
             catch (Exception ex)
             {

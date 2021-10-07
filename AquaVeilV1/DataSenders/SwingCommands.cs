@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AquaVeilV1.Settings;
+using AquaVeilV1.Utils;
 
 namespace AquaVeilV1.DataSenders
 {
@@ -38,8 +40,11 @@ namespace AquaVeilV1.DataSenders
         {
             String command =  "~" + (char) 21 + "wr|";
 
-            String lines = ASCIIEncoding.ASCII.GetString(line);
-            return command + lines + (char)10;
+            Encoding encoderToAscii = Encoding.GetEncoding(28591);
+            command += encoderToAscii.GetString(line);
+
+            Logger.info(Encoding.GetEncoding(28591).GetString(line)); // TODO: Delete this after test!
+            return command + (char)10;
         }
     }
 }
